@@ -12,7 +12,7 @@ This project automates the provisioning of Kubernetes (K8s) cluster nodes, enabl
 - Installs and configures essential tools such as Docker and Kubernetes
 - Sets up the control plane
 - Sets up worker nodes
-- Configures ingress (TCP-based reverse proxy)
+- Configures proxy (TCP-based reverse proxy)
 
 <!-- ## Architecture
 
