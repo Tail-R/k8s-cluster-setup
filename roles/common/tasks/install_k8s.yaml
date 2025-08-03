@@ -1,0 +1,33 @@
+- import_tasks: update_pacman.yaml
+
+- name: Collect installed packages
+  package_facts:
+    manager: auto
+
+- name: Remove iptables to resolve conflicts
+  become: yes
+  command: pacman -Rdd --noconfirm iptables
+  when: "'iptables' in ansible_facts.packages"
+  ignore_errors: true
+
+- name: Remove iproute2 to resolve conflicts
+  become: yes
+  command: pacman -Rdd --noconfirm iproute2
+  when: "'iproute2' in ansible_facts.packages"
+  ignore_errors: true
+
+- name: Install required networking packages
+  become: yes
+  pacman:
+    name:
+      - iptables-nft
+      - iproute2
+    state: present
+    update_cache: yes
+
+- name: Install Kubernetes packages
+  become: yes
+  pacman:
+    name: "{{ k8s_packages }}"
+    state: present
+    update_cache: yes

@@ -1,0 +1,9 @@
+docker_packages:
+  - docker
+  - containerd
+
+k8s_packages:
+  - kubeadm
+  - kubelet
+  - kubectl
+  - containerd

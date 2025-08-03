@@ -1,0 +1,20 @@
+- import_tasks: update_pacman.yaml
+
+- name: Install Docker packages
+  pacman:
+    name:
+      "{{ docker_packages }}"
+    state: present
+
+- name: Enable adn start Docker service
+  systemd:
+    name: docker
+    enabled: yes
+    state: started
+
+- name: Add user to docker groups
+  user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: yes
+  when: ansible_user_id != 'root'
