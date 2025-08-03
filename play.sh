@@ -4,9 +4,24 @@ set -euo pipefail
 
 SSH_KEY="${HOME}/.ssh/id_ed25519"
 
-if [ -z "${SSH_AUTH_SOCK-}" ] || ! ssh-add -l &> /dev/null; then
+# Check whether the SSH key is exists
+if [ ! -f "${SSH_KEY}" ]; then
+    echo "ERROR: SSH key not found at ${SSH_KEY}" >&2
+    exit 1
+fi
+
+# Start SSH agent if not running
+if [ -z "${SSH_AUTH_SOCK-}" ]; then
     eval "$(ssh-agent -s)"
+fi
+
+# Cache SSH key
+if ! ssh-add -l | grep -q "${SSH_KEY}"; then
     ssh-add "${SSH_KEY}"
 fi
 
-ansible-playbook site.yaml --ask-become-pass
+if [ "${#}" -gt 0 ]; then
+    ansible-playbook site.yaml --ask-become-pass --limit "${@}"
+else
+    ansible-playbook site.yaml --ask-become-pass    
+fi
