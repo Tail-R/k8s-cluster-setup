@@ -1,5 +1,33 @@
+#
+# Common configurations that every node requires
+#
 - name: Apply common configuration to all nodes
   hosts: all
   become: yes
   roles:
     - common
+
+#
+# Deploy all nodes
+#
+- name: Deploy control plane nodes
+  hosts: control
+  become: yes
+  roles:
+    - k8s_control
+
+- name: Deploy worker nodes
+  hosts: workers
+  become: yes
+  roles:
+    - workers
+
+- name: Deploy reverse proxy nodes
+  hosts: proxy
+  become: yes
+  roles:
+    - k8s_proxy
+
+# Synchronization
+- meta: barrier
+  name: Wait until all nodes are deployed
