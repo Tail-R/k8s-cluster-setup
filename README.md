@@ -10,10 +10,7 @@ This project automates the provisioning of Kubernetes (K8s) cluster nodes, enabl
 
 - Automated provisioning with Ansible
 - Installs and configures essential tools such as Docker and Kubernetes
-- Sets up the control plane
-- Sets up worker nodes
-- Configures proxy (TCP-based reverse proxy)
-- Init control plane
+- Init control plane node
 - Join worker nodes
 - Deploy game server
 - Deploy envoy proxy
