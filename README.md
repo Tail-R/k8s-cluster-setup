@@ -1,6 +1,6 @@
 # Project Title
 
-Kubernetes-Based High Availability Infrastructure Setup Using Ansible
+Kubernetes-Based High Availability Game Server Setup Using Ansible
 
 ## Purpose
 
@@ -13,6 +13,11 @@ This project automates the provisioning of Kubernetes (K8s) cluster nodes, enabl
 - Sets up the control plane
 - Sets up worker nodes
 - Configures proxy (TCP-based reverse proxy)
+- Init control plane
+- Join worker nodes
+- Deploy game server
+- Deploy envoy proxy
+- Expose the physical IP for envoy proxy using MetalLB (L2 Mode) + LoadBalancer service
 
 <!-- ## Architecture
 
