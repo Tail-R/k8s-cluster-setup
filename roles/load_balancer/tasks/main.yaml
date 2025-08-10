@@ -1,0 +1,2 @@
+- import_tasks: deploy_metal_lb.yaml
+- import_tasks: apply_lb_service.yaml

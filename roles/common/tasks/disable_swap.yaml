@@ -1,0 +1,9 @@
+- name: Disable swap temporarily
+  command: swapoff -a
+  when: ansible_swaptotal_mb > 0
+
+- name: Disable swap permanently in fstab
+  replace:
+    path: /etc/fstab
+    regexp: '^\s*([^#]\S*\s+swap\s+\S+)'
+    replace: '# \1'

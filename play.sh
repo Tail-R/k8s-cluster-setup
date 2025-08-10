@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+PLAYBOOK="site.yaml"
+
 SSH_KEY="${HOME}/.ssh/id_ed25519"
 
 # Check whether the SSH key is exists
@@ -21,7 +23,7 @@ if ! ssh-add -l | grep -q "${SSH_KEY}"; then
 fi
 
 if [ "${#}" -gt 0 ]; then
-    ansible-playbook site.yaml --ask-become-pass --limit "${@}"
+    ansible-playbook "${PLAYBOOK}" --ask-become-pass --limit "${@}"
 else
-    ansible-playbook site.yaml --ask-become-pass    
+    ansible-playbook "${PLAYBOOK}" --ask-become-pass    
 fi

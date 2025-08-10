@@ -8,26 +8,46 @@
     - common
 
 #
-# Deploy all nodes
+# Init control plane
 #
-- name: Deploy control plane nodes
+- name: Init control plane nodes
   hosts: control
   become: yes
   roles:
     - k8s_control
 
-- name: Deploy worker nodes
+#
+# Join workers
+#
+- name: Join worker nodes
   hosts: workers
   become: yes
   roles:
-    - workers
+    - k8s_worker
 
-- name: Deploy reverse proxy nodes
-  hosts: proxy
+#
+# Deploy game server
+#
+- name: Deploy game_server
+  hosts: control
   become: yes
   roles:
-    - k8s_proxy
+    - game_server
 
-# Synchronization
-- meta: barrier
-  name: Wait until all nodes are deployed
+#
+# Deploy reverse proxy
+#
+- name: Deploy reverse proxy
+  hosts: control
+  become: yes
+  roles:
+    - reverse_proxy
+
+#
+# Deploy load balacner
+#
+- name: Deploy load balacner
+  hosts: control
+  become: yes
+  roles:
+    - load_balancer

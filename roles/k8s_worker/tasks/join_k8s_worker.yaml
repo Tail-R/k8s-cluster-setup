@@ -1,0 +1,19 @@
+# - name: Reset kubeadm state on worker
+#   command: kubeadm reset -f
+
+# - name: Clean kubeadm config directory
+#   file:
+#     path: /etc/kubernetes
+#     state: absent
+
+# - name: Recreate /etc/kubernetes directory
+#   file:
+#     path: /etc/kubernetes
+#     state: directory
+#     mode: '0755'
+
+- name: Join the node to the Kubernetes cluster
+  command: "{{ hostvars[groups['control'][0]].join_command }}"
+  args:
+    creates: /etc/kubernetes/kubelet.conf
+  when: hostvars[groups['control'][0]].join_command is defined

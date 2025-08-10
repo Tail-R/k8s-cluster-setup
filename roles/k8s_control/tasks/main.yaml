@@ -1,0 +1,2 @@
+- import_tasks: init_k8s_control.yaml
+- import_tasks: apply_flannel_cni.yaml

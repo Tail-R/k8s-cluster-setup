@@ -1,23 +1,22 @@
-- import_tasks: update_pacman.yaml
-
+#
+# Before installing Kubernetes, We need to uninstall iptables and
+# install iptables-nft to resolve the package conflict
+#
 - name: Collect installed packages
   package_facts:
     manager: auto
 
 - name: Remove iptables to resolve conflicts
-  become: yes
   command: pacman -Rdd --noconfirm iptables
   when: "'iptables' in ansible_facts.packages"
   ignore_errors: true
 
 - name: Remove iproute2 to resolve conflicts
-  become: yes
   command: pacman -Rdd --noconfirm iproute2
   when: "'iproute2' in ansible_facts.packages"
   ignore_errors: true
 
 - name: Install required networking packages
-  become: yes
   pacman:
     name:
       - iptables-nft
@@ -26,7 +25,6 @@
     update_cache: yes
 
 - name: Install Kubernetes packages
-  become: yes
   pacman:
     name: "{{ k8s_packages }}"
     state: present
