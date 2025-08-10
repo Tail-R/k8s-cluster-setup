@@ -1,0 +1,28 @@
+- name: Generate new hostname by replacing _ with -
+  set_fact:
+    new_hostname: "{{ inventory_hostname | replace('_', '-') }}"
+
+- name: Get current hostname
+  command: cat /proc/sys/kernel/hostname
+  register: current_hostname
+  changed_when: false
+
+- name: Change hostname using hostnamectl if needed
+  command: hostnamectl set-hostname {{ new_hostname }}
+  when: current_hostname.stdout != new_hostname
+
+- name: Update /etc/hosts with new hostname entry
+  lineinfile:
+    path: /etc/hosts
+    regexp: '^127\.0\.1\.1\s+'
+    line: "127.0.1.1 {{ new_hostname }}"
+    state: present
+
+- name: Verify hostname changed by reading /proc/sys/kernel/hostname
+  command: cat /proc/sys/kernel/hostname
+  register: hostname_check
+  changed_when: false
+
+- name: Show new hostname
+  debug:
+    msg: "New hostname is {{ hostname_check.stdout }}"

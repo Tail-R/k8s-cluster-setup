@@ -2,6 +2,9 @@
 - import_tasks: ping.yaml
 - import_tasks: update_pacman.yaml
 
+# Change hostname
+- import_tasks: change_hostname.yaml
+
 # Install necessary packages
 - import_tasks: install_aur.yaml
 - import_tasks: install_k8s.yaml
