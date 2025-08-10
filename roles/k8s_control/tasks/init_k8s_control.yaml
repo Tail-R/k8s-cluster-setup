@@ -1,6 +1,3 @@
-# - name: Reset Kubernetes control plane
-#   command: kubeadm reset -f
-
 - name: Initialize Kubernetes control plane
   command: >
     kubeadm init

@@ -1,16 +1,15 @@
 # Misc tasks
 - import_tasks: ping.yaml
-- import_tasks: update_pacman.yaml
-
-# Change hostname
 - import_tasks: change_hostname.yaml
 
 # Install necessary packages
+- import_tasks: update_pacman.yaml
 - import_tasks: install_aur.yaml
 - import_tasks: install_k8s.yaml
 - import_tasks: install_docker.yaml
 
 # Enable and start necessary services
+- import_tasks: enable_ntp.yaml
 - import_tasks: enable_kubelet.yaml
 - import_tasks: enable_docker.yaml
 
