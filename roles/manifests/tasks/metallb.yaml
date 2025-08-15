@@ -1,0 +1,4 @@
+- name: Apply MetalLB controller and speaker
+  kubernetes.core.k8s:
+    state: present
+    src: https://raw.githubusercontent.com/metallb/metallb/v0.14.5/manifests/metallb-native.yaml

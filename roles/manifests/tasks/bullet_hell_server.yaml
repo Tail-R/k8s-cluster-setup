@@ -1,0 +1,4 @@
+- name: Deploy bullet-hell-server
+  kubernetes.core.k8s:
+    state: present
+    kustomize: https://raw.githubusercontent.com/Tail-R/k8s-cluster-manifests/main/apps/bullet_hell_server

@@ -1,0 +1,4 @@
+- import_tasks: base.yaml
+- import_tasks: bullet_hell_server.yaml
+- import_tasks: envoy.yaml
+- import_tasks: metallb.yaml

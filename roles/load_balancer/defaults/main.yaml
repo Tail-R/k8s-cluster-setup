@@ -1,4 +1,0 @@
-# envoy_image_tag: v1.33-latest
-# envoy_config_dir: /etc/envoy
-# envoy_config_src: ./envoy.yaml
-# envoy_config_dest: /etc/envoy/envoy.yaml
