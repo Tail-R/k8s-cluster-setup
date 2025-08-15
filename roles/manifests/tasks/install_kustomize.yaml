@@ -1,0 +1,4 @@
+- name: Install Kustomize package
+  pacman:
+    name: kustomize
+    state: present

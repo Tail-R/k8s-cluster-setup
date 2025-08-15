@@ -1,4 +1,0 @@
-- name: Deploy Envoy
-  kubernetes.core.k8s:
-    state: present
-    kustomize: https://raw.githubusercontent.com/Tail-R/k8s-cluster-manifests/main/apps/envoy

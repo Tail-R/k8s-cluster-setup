@@ -1,0 +1,5 @@
+- name: Apply MetalLB controller and speaker
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_path }}"
+    state: present
+    src: "{{ metallb_url }}"
