@@ -1,3 +1,11 @@
+# A tool to combine multiple YAML files into one file
 - import_tasks: install_kustomize.yaml
-- import_tasks: apply_metallb.yaml
+
+# Deploy Metrics Server for CPU/memory metrics
+- import_tasks: deploy_metrics_server.yaml
+
+# Deploy MetalLB Controller/Speaker
+- import_tasks: deploy_metallb.yaml
+
+# Overlay manifests
 - import_tasks: apply_overlay.yaml

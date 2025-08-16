@@ -4,7 +4,7 @@
     --pod-network-cidr={{ pod_network_cidr }}
     --apiserver-advertise-address={{ ansible_default_ipv4.address }}
   args:
-    creates: /etc/kubernetes/admin.conf # Ensure only init once
+    creates: "{{ adminconfig_path }}" # Ensure only init once
   register: kubeadm_init
   retries: 3
   delay: 10
@@ -36,8 +36,8 @@
 
 - name: Copy admin.conf to user's kube config
   copy:
-    src: /etc/kubernetes/admin.conf
-    dest: /home/{{ ansible_user }}/.kube/config
+    src: "{{ adminconfig_path }}"
+    dest: "{{ kubeconfig_path }}"
     remote_src: yes
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"

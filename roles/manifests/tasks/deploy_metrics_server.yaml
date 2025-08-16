@@ -1,0 +1,23 @@
+- name: Clone Metrics Server repo from GitHub
+  git:
+    repo: "{{ metrics_server_url }}"
+    dest: "{{ metrics_server_dest }}"
+    version: "{{ metrics_server_version }}"
+    force: yes
+
+- name: Add --kubelet-insecure-tls in one line
+  lineinfile:
+    path: "{{ metrics_server_dest }}/manifests/base/deployment.yaml"
+    regexp: '(^\s*args:)'
+    line: '\1\n          - --kubelet-insecure-tls'
+    backrefs: yes
+
+- name: Build manifest from overlay
+  command:
+    cmd: kustomize build {{ metrics_server_dest }}/manifests/overlays/release -o {{ metrics_server_yaml }}
+
+- name: Apply patched Metrics Server manifest
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_path }}"
+    state: present
+    src: "{{ metrics_server_yaml }}"

@@ -1,0 +1,9 @@
+# Kubernetes virtual network cidr
+pod_network_cidr: "10.244.0.0/16"
+
+# Kubernetes config files
+adminconfig_path: "/etc/kubernetes/admin.conf"
+kubeconfig_path: "/home/{{ ansible_user }}/.kube/config"
+
+# System reboot flag
+require_reboot: false

@@ -1,2 +1,5 @@
+# Initialize the K8s control plane
 - import_tasks: init_k8s_control.yaml
+
+# Apply CNI (Container Network Interface)
 - import_tasks: apply_flannel_cni.yaml

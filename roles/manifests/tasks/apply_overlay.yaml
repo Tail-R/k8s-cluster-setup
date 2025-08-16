@@ -1,16 +1,16 @@
 - name: Clone k8s-cluster-manifests repo from GitHub
-  ansible.builtin.git:
+  git:
     repo: "{{ overlay_url }}"
     dest: "{{ overlay_dest }}"
     version: "{{ overlay_version }}"
     force: yes
 
 - name: Build single manifest file from Kustomize
-  ansible.builtin.command:
-    cmd: kustomize build {{ overlay_dest }}/{{ overlay_name }} -o {{ generated_manifest }}
+  command:
+    cmd: kustomize build {{ overlay_dest }}/{{ overlay_name }} -o {{ overlay_yaml }}
 
 - name: Apply generated manifest with Ansible k8s module
   kubernetes.core.k8s:
     state: present
     kubeconfig: "{{ kubeconfig_path }}"
-    src: "{{ generated_manifest }}"
+    src: "{{ overlay_yaml }}"

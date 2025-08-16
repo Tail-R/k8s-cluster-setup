@@ -1,1 +1,2 @@
+# Join the worker node to the K8s cluster
 - import_tasks: join_k8s_worker.yaml

@@ -1,7 +1,16 @@
+# Metrics Server manifest location
+metrics_server_url: "https://github.com/kubernetes-sigs/metrics-server.git"
+metrics_server_dest: "/home/admin/ansible/manifests/metrics-server"
+metrics_server_version: "release-0.8"
+metrics_server_overlay: deploy/standalone
+metrics_server_yaml: "/tmp/metrics-server.yaml"
+
+# MetalLB manifest location
 metallb_url: "https://raw.githubusercontent.com/metallb/metallb/v0.14.5/config/manifests/metallb-native.yaml"
+
+# Overlay manifests location
 overlay_url: "https://github.com/Tail-R/k8s-cluster-manifests.git"
 overlay_dest: "/home/admin/ansible/manifests/k8s-cluster-manifests"
 overlay_version: "main"
 overlay_name: "overlays/dev"
-generated_manifest: "/tmp/dev.yaml"
-kubeconfig_path: "/etc/kubernetes/admin.conf"
+overlay_yaml: "/tmp/dev.yaml"

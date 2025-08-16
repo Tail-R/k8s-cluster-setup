@@ -5,7 +5,7 @@
 # Install necessary packages
 - import_tasks: update_pacman.yaml
 - import_tasks: install_aur.yaml
-- import_tasks: install_k8s.yaml
+- import_tasks: install_kubernetes.yaml
 - import_tasks: install_docker.yaml
 
 # Enable and start necessary services
@@ -15,3 +15,6 @@
 
 # Disable swap for Kubernetes
 - import_tasks: disable_swap.yaml
+
+# Reboot if required
+- import_tasks: reboot.yaml

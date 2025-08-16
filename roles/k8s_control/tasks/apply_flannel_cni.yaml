@@ -1,10 +1,10 @@
 - name: Download Flannel manifest
   get_url:
-    url: https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
-    dest: /tmp/kube-flannel.yml
+    url: "{{ flannel_url }}"
+    dest: "{{ flannel_dest }}"
 
 - name: Apply Flannel CNI manifest
-  k8s:
-    kubeconfig: /etc/kubernetes/admin.conf
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_path }}"
     state: present
-    src: /tmp/kube-flannel.yml
+    src: "{{ flannel_dest }}"

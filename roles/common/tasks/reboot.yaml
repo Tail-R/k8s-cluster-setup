@@ -1,0 +1,5 @@
+- name: Reboot system
+  reboot:
+    reboot_timeout: 600
+    test_command: whoami
+  when: require_reboot
