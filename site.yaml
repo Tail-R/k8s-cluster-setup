@@ -1,26 +1,26 @@
 #
-# Common configurations that every node requires
+# Common configurations that every K8s node requires
 #
-- name: Apply common configuration to all nodes
-  hosts: all
+- name: Apply common configuration to all K8s nodes
+  hosts: k8s_all
   become: yes
   roles:
-    - common
+    - k8s_common
 
 #
-# Init control plane
+# Init K8s control plane
 #
 - name: Init control plane nodes
-  hosts: control
+  hosts: k8s_control
   become: yes
   roles:
     - k8s_control
 
 #
-# Join workers
+# Join K8s workers
 #
 - name: Join worker nodes
-  hosts: workers
+  hosts: k8s_worker
   become: yes
   roles:
     - k8s_worker
@@ -29,7 +29,7 @@
 # Apply K8s cluster manifests
 #
 - name: Apply K8s cluster manifests
-  hosts: control
+  hosts: k8s_control
   become: yes
   roles:
     - manifests

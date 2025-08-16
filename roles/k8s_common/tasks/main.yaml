@@ -1,5 +1,4 @@
-# Misc tasks
-- import_tasks: ping.yaml
+# Change hostname
 - import_tasks: change_hostname.yaml
 
 # Install necessary packages
