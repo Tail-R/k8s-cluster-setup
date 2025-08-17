@@ -1,19 +1,10 @@
-# Change hostname
-- import_tasks: change_hostname.yaml
-
 # Install necessary packages
-- import_tasks: update_pacman.yaml
-- import_tasks: install_aur.yaml
 - import_tasks: install_kubernetes.yaml
 - import_tasks: install_docker.yaml
 
-# Enable and start necessary services
-- import_tasks: enable_ntp.yaml
-- import_tasks: enable_kubelet.yaml
-- import_tasks: enable_docker.yaml
-
-# Disable swap for Kubernetes
-- import_tasks: disable_swap.yaml
-
 # Reboot if required
 - import_tasks: reboot.yaml
+
+# Enable and start necessary services
+- import_tasks: enable_kubelet.yaml
+- import_tasks: enable_docker.yaml

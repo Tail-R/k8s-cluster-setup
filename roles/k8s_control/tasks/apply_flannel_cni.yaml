@@ -1,4 +1,4 @@
-- name: Download Flannel manifest
+- name: Get Flannel manifest
   get_url:
     url: "{{ flannel_url }}"
     dest: "{{ flannel_dest }}"

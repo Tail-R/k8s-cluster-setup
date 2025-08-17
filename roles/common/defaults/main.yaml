@@ -1,0 +1,5 @@
+base_packages:
+  - git
+  - base-devel
+  - python3
+  - python-pip

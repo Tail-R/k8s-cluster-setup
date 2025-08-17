@@ -1,0 +1,23 @@
+- name: Create a build user
+  user:
+    name: "{{ aur_user }}"
+    shell: /bin/bash
+    create_home: yes
+    groups: wheel
+    state: present
+
+- name: Allow build user to use sudo without password
+  copy:
+    dest: "/etc/sudoers.d/{{ aur_user }}-nopasswd"
+    content: "{{ aur_user }} ALL=(ALL) NOPASSWD: ALL"
+    mode: '0440'
+
+- name: Install yay (AUR helper) if not present
+  become_user: "{{ aur_user }}"
+  shell: |
+    cd /tmp
+    git clone https://aur.archlinux.org/yay-bin.git
+    cd yay-bin
+    makepkg -si --noconfirm
+  args:
+    creates: /usr/bin/yay

@@ -1,0 +1,5 @@
+- name: Install Ceph
+  become_user: "{{ aur_user }}"
+  command: yay -S --noconfirm cephadm
+  args:
+    creates: /usr/local/bin/cephadm

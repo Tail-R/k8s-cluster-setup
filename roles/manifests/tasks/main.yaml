@@ -1,7 +1,7 @@
 # A tool to combine multiple YAML files into one file
 - import_tasks: install_kustomize.yaml
 
-# Deploy Metrics Server for CPU/memory metrics
+# Deploy Metrics Server for CPU/Memory metrics
 - import_tasks: deploy_metrics_server.yaml
 
 # Deploy MetalLB Controller/Speaker

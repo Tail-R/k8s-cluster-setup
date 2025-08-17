@@ -1,0 +1,15 @@
+# Change hostname
+- import_tasks: change_hostname.yaml
+
+# Synchronize the system clock
+- import_tasks: enable_ntp.yaml
+
+# Disable swap for Kubernetes
+- import_tasks: disable_swap.yaml
+
+# Update package DB and upgrade packages
+- import_tasks: update_pacman.yaml
+
+# Install necessary packages
+- import_tasks: install_base.yaml
+- import_tasks: install_aur.yaml

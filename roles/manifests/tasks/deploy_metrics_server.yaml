@@ -13,8 +13,7 @@
     backrefs: yes
 
 - name: Build manifest from overlay
-  command:
-    cmd: kustomize build {{ metrics_server_dest }}/manifests/overlays/release -o {{ metrics_server_yaml }}
+  command: kustomize build {{ metrics_server_dest }}/manifests/overlays/release -o {{ metrics_server_yaml }}
 
 - name: Apply patched Metrics Server manifest
   kubernetes.core.k8s:

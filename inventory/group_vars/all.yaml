@@ -6,4 +6,7 @@ adminconfig_path: "/etc/kubernetes/admin.conf"
 kubeconfig_path: "/home/{{ ansible_user }}/.kube/config"
 
 # System reboot flag
-require_reboot: false
+require_reboot: true
+
+# AUR user
+aur_user: builduser

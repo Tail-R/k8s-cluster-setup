@@ -1,0 +1,1 @@
+kubeletconfig_path: "/etc/kubernetes/kubelet.conf"

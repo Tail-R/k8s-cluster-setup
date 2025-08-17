@@ -4,7 +4,7 @@
 #
 - name: Collect installed packages
   package_facts:
-    manager: auto
+    manager: pacman
 
 - name: Remove iptables to resolve conflicts
   command: pacman -Rdd --noconfirm iptables

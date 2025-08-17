@@ -1,0 +1,2 @@
+# Install necessary packages
+- import_tasks: install_ceph.yaml

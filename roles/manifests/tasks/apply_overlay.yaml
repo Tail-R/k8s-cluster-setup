@@ -6,8 +6,7 @@
     force: yes
 
 - name: Build single manifest file from Kustomize
-  command:
-    cmd: kustomize build {{ overlay_dest }}/{{ overlay_name }} -o {{ overlay_yaml }}
+  command: kustomize build {{ overlay_dest }}/{{ overlay_name }} -o {{ overlay_yaml }}
 
 - name: Apply generated manifest with Ansible k8s module
   kubernetes.core.k8s:
