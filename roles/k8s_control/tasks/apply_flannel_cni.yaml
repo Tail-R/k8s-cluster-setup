@@ -8,3 +8,9 @@
     kubeconfig: "{{ kubeconfig_path }}"
     state: present
     src: "{{ flannel_dest }}"
+
+- name: Wait for all Flannel pods to be Ready
+  command: >
+    kubectl --kubeconfig={{ kubeconfig_path }} -n kube-flannel \
+    wait --for=condition=Ready pod -l app=flannel --timeout=300s
+  changed_when: false

@@ -16,7 +16,7 @@
   become_user: "{{ aur_user }}"
   shell: |
     cd /tmp
-    git clone https://aur.archlinux.org/yay-bin.git
+    git clone {{ yay_bin_url }}
     cd yay-bin
     makepkg -si --noconfirm
   args:
