@@ -1,0 +1,4 @@
+ceph_requirements:
+  - python3
+  - podman
+  - lvm2

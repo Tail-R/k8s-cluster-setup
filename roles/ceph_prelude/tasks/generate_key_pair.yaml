@@ -1,0 +1,6 @@
+- name: Generate SSH key pair for cephadm
+  openssh_keypair:
+    path: "{{ ssh_key_path }}"
+    type: rsa
+    size: 4096
+    force: false

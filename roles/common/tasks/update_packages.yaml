@@ -1,0 +1,11 @@
+- name: Update all packages for Arch hosts
+  pacman:
+    update_cache: true
+    upgrade: yes
+  when: ansible_facts['os_family'] == 'Arch'
+
+- name: Update all packages for Debian hosts
+  apt:
+    update_cache: true
+    upgrade: yes
+  when: ansible_facts['os_family'] == 'Debian'

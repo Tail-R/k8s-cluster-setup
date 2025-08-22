@@ -1,0 +1,14 @@
+# Deploy MONs
+- import_tasks: deploy_mon.yaml
+
+# Deploy OSDs
+- import_tasks: deploy_osd.yaml
+
+# Create data/metadata pool
+- import_tasks: create_data_pool.yaml
+
+# Deploy MDSs
+- import_tasks: deploy_mds.yaml
+
+# Create CephFS and user
+- import_tasks: create_cephfs.yaml

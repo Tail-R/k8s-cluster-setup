@@ -4,21 +4,25 @@ Kubernetes-Based High Availability Game Server Setup Using Ansible
 
 ## Purpose
 
-This project automates the provisioning of Kubernetes (K8s) cluster nodes, enables recovery from failures, and facilitates rapid server recreation when adding new nodes.
+This project automates the provisioning of Kubernetes (K8s) cluster and CephFS cluster, enables recovery from failures, and facilitates rapid server recreation when adding new nodes.
+
+Also, the provisioning is idempotent, so you can create a cluster or add nodes to a cluster by running the same playbook.
 
 ## Features
 
-- Automated provisioning with Ansible
-- Installs and configures essential tools such as Docker and Kubernetes
-- Init control plane node
-- Join worker nodes
-- Deploy game server
-- Deploy envoy proxy
-- Expose the physical IP for envoy proxy using MetalLB (L2 Mode) + LoadBalancer service
+- Automated Kubernetes cluster provisioning
+    - Deploy game server
+    - Deploy Envoy Proxy
+    - Deploy Metrics Server
+    - Creates an entry point using MetalLB (L2 Mode) + LoadBalancer Service
+    - Mount CephFS as storage for gameplay logs
 
-<!-- ## Architecture
+- Automated CephFS cluster provisioning
+    - Bootstrap using cephadm, including SSH key installation
+    - Deploy components like MON, OSD, Data Pool, FS, MDS
 
-![Architecture Diagram](./architecture.png) -->
+## Dependencies
+- ansible 2.16.0 >=
 
 ## How to Use
 
@@ -40,7 +44,7 @@ chmod +x play.sh
 
 ## Notes
 
-- This project currently supports Arch Linux only.
+- This playbook assumes that the K8s nodes are Arch-based and the CephFS nodes are Debian-based.
 
 ## License
 

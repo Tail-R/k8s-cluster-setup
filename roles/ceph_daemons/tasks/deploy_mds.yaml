@@ -1,0 +1,14 @@
+- name: Get existing MDSs
+  command: cephadm shell -- ceph orch ps --daemon-type mds -f json
+  register: mds_list
+  changed_when: false
+
+- name: Create a list of hosts with MDS
+  set_fact:
+    hosts_with_mds: "{{ mds_list.stdout | from_json | map(attribute='hostname') | list }}"
+
+- name: Apply MDS services
+  command: >
+    cephadm shell -- ceph orch apply mds {{ ceph_fs_name }}
+    --placement="{{ (groups['ceph_mds'] | difference(hosts_with_mds)) | join(',') }}"
+  when: "(groups['ceph_mds'] | difference(hosts_with_mds) | length) > 0"

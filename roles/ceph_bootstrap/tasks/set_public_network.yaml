@@ -1,0 +1,4 @@
+- name: Configure public_network for Ceph
+  become_user: root
+  command: >
+    cephadm shell -- ceph config set global public_network {{ ceph_network_cidr }}

@@ -1,0 +1,24 @@
+- name: Ensure /root/.ssh directory exists
+  file:
+    path: /root/.ssh
+    state: directory
+    mode: '0700'
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['ceph_storage'] }}"
+
+- name: Read ceph.pub on bootstrap
+  slurp:
+    src: "{{ ceph_pub_key_path }}"
+  register: ceph_pub_encoded
+
+- name: Decode ceph.pub content
+  set_fact:
+    ceph_pub_content: "{{ ceph_pub_encoded.content | b64decode }}"
+
+- name: Copy Ceph public key to the authorized_key of the storages
+  authorized_key:
+    user: root
+    key: "{{ ceph_pub_content }}"
+    state: present
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['ceph_storage'] }}"

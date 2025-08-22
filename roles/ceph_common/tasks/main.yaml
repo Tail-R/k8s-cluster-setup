@@ -1,2 +1,5 @@
-# Install necessary packages
-- import_tasks: install_ceph.yaml
+# Enable root ssh for all storage nodes 
+- import_tasks: enable_root_ssh.yaml
+
+# Install Requirements like Podman, LVM2
+- import_tasks: install_requirements.yaml

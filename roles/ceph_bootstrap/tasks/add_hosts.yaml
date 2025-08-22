@@ -1,0 +1,23 @@
+- name: Add all Ceph nodes to /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ hostvars[item]['ansible_host'] }} {{ item }}"
+    state: present
+  loop: "{{ groups['ceph_all'] }}"
+  when: item != 'localhost'
+
+- name: Get registered Ceph hosts
+  command: cephadm shell -- ceph orch host ls --format json
+  register: ceph_hosts
+  changed_when: false
+
+- name: Create a list of registered hostnames
+  set_fact:
+    registered_hosts: "{{ ceph_hosts.stdout | from_json | map(attribute='hostname') | list }}"
+
+- name: Add Ceph hosts if not already registered
+  command: cephadm shell -- ceph orch host add {{ item }}
+  loop: "{{ groups['ceph_all'] }}"
+  when:
+    - item != 'localhost'
+    - item not in registered_hosts

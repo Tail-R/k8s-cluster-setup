@@ -1,0 +1,11 @@
+- name: Get existing MONs
+  command: cephadm shell -- ceph orch ps --daemon-type mon -f json
+  register: mon_list
+  changed_when: false
+
+- name: Add MONs
+  command: cephadm shell -- ceph orch daemon add mon {{ item }}
+  loop: "{{ groups['ceph_mon'] }}"
+  when:
+    - item != inventory_hostname
+    - item not in mon_list.stdout | from_json | map(attribute='hostname') | list

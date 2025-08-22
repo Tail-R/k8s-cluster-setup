@@ -1,0 +1,12 @@
+# Install necessary packages
+- import_tasks: install_cephadm.yaml
+
+# Bootstrap cephadm
+- import_tasks: bootstrap.yaml
+- import_tasks: install_ceph_pub.yaml
+
+# Set public network
+- import_tasks: set_public_network.yaml
+
+# Add ceph hosts
+- import_tasks: add_hosts.yaml

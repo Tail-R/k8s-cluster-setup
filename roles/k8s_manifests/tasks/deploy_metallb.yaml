@@ -6,12 +6,12 @@
 
 - name: Wait for MetalLB controller to be Available
   command: >
-    kubectl --kubeconfig={{ kubeconfig_path }} -n metallb-system wait \
+    kubectl --kubeconfig={{ kubeconfig_path }} -n metallb-system wait
     --for=condition=Available deployment/controller --timeout=300s
   changed_when: false
 
 - name: Wait for all MetalLB speaker pods to be Ready
   command: >
-    kubectl --kubeconfig={{ kubeconfig_path }} -n metallb-system wait \
+    kubectl --kubeconfig={{ kubeconfig_path }} -n metallb-system wait
     --for=condition=Ready pod -l component=speaker --timeout=300s
   changed_when: false

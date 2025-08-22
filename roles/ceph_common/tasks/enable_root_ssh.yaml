@@ -1,0 +1,21 @@
+- name: Enable root SSH for Ceph storage nodes
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PermitRootLogin\s+'
+    line: 'PermitRootLogin yes'
+    state: present
+    backup: yes
+  when: inventory_hostname not in groups['ceph_bootstrap']
+
+- name: Disable SSH password authentication
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PasswordAuthentication\s+'
+    line: 'PasswordAuthentication no'
+  when: inventory_hostname not in groups['ceph_bootstrap']
+
+- name: Restart SSH daemon
+  service:
+    name: sshd
+    state: restarted
+  when: inventory_hostname not in groups['ceph_bootstrap']

@@ -1,0 +1,4 @@
+# Setup SSH keys between bootstrap and storages
+- import_tasks: generate_key_pair.yaml
+- import_tasks: install_priv_key.yaml
+- import_tasks: install_pub_key.yaml

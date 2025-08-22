@@ -1,5 +1,8 @@
-# Change hostname
-- import_tasks: change_hostname.yaml
+# Allow admin user to use sudo without password
+- import_tasks: enable_nopasswd_sudo.yaml
+
+# Rename hostname to inventory hostname
+- import_tasks: rename_hostname.yaml
 
 # Synchronize the system clock
 - import_tasks: enable_ntp.yaml
@@ -7,9 +10,11 @@
 # Disable swap for Kubernetes
 - import_tasks: disable_swap.yaml
 
-# Update package DB and upgrade packages
-- import_tasks: update_pacman.yaml
+# Disable lid-close sleep for Laptop
+- import_tasks: disable_lid_close_sleep.yaml
 
-# Install necessary packages
+# Update and upgrade all packages
+- import_tasks: update_packages.yaml
+
+# Install base packages
 - import_tasks: install_base.yaml
-- import_tasks: install_aur.yaml

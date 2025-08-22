@@ -1,8 +1,11 @@
-base_packages:
+base_pkgs_pacman:
   - git
   - base-devel
   - python3
   - python-pip
 
-# AUR location
-yay_bin_url: "https://aur.archlinux.org/yay-bin.git"
+base_pkgs_apt:
+  - git
+  - build-essential
+  - python3
+  - python3-pip

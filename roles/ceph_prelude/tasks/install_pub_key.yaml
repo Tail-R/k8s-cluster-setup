@@ -1,0 +1,19 @@
+- name: Ensure /root/.ssh exists on storages
+  become: yes
+  file:
+    path: /root/.ssh
+    state: directory
+    owner: root
+    group: root
+    mode: '0700'
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['ceph_storage'] }}"
+
+- name: Copy public key to the authorized_key of the storages
+  become: yes
+  authorized_key:
+    user: root
+    key: "{{ lookup('file', pub_key_path) }}"
+    state: present
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['ceph_storage'] }}"

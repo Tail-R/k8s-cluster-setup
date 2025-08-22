@@ -1,3 +1,11 @@
+---
+# AUR user
+aur_user: builduser
+
+# AUR location
+yay_bin_url: "https://aur.archlinux.org/yay-bin.git"
+
+---
 - name: Create a build user
   user:
     name: "{{ aur_user }}"

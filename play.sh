@@ -6,7 +6,7 @@ PLAYBOOK="site.yaml"
 
 SSH_KEY="${HOME}/.ssh/id_ed25519"
 
-# Check whether the SSH key is exists
+# Check whether the SSH key exists
 if [ ! -f "${SSH_KEY}" ]; then
     echo "ERROR: SSH key not found at ${SSH_KEY}" >&2
     exit 1
@@ -22,8 +22,11 @@ if ! ssh-add -l | grep -q "${SSH_KEY}"; then
     ssh-add "${SSH_KEY}"
 fi
 
+# Install required modules
+ansible-galaxy collection install -r requirements.yaml
+
 if [ "${#}" -gt 0 ]; then
     ansible-playbook "${PLAYBOOK}" --ask-become-pass --limit "${@}"
 else
-    ansible-playbook "${PLAYBOOK}" --ask-become-pass    
+    ansible-playbook "${PLAYBOOK}" --ask-become-pass
 fi

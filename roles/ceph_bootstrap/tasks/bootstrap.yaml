@@ -1,0 +1,9 @@
+- name: Bootstrap Ceph Cluster
+  command: >
+    cephadm bootstrap
+    --mon-ip {{ ansible_host }}
+    --skip-mon-network
+    --initial-dashboard-user {{ dashboard_user }}
+    --initial-dashboard-password {{ dashboard_pass }}
+  args:
+    creates: "{{ ceph_conf_path }}"

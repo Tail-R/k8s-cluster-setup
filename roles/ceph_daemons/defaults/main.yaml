@@ -1,0 +1,34 @@
+# LVM lavels
+ceph_pv_label: "/dev/sda3"
+ceph_vg_label: "ceph-vg"
+ceph_lv_label: "osd0"
+ceph_lvm_label: "/dev/{{ ceph_vg_label }}/{{ ceph_lv_label }}"
+
+# --------------------------------------------------------------------
+# Data/metadata pool configurations
+# --------------------------------------------------------------------
+# Number of placement group
+#   Too few PGs → uneven data distribution
+#   Too many PGs → higher memory usage on MONs and OSDs
+#
+#   pg_num = (Total_OSDs x 100) / replication_size
+#
+#   For 3 OSDs, replication 3:
+#     round to nearest power of 2, e.g., 128.
+# --------------------------------------------------------------------
+
+# Number of placement group
+pg_num: "64"
+
+# Replication size
+replicas: "3"
+
+# Name of the data pools
+ceph_data_pool: "bullet-hell-play-log"
+ceph_metadata_pool: "bullet-hell-play-log-meta"
+
+# Name of the file system
+ceph_fs_name: "bullet-hell-fs"
+
+# CephFS user
+ceph_fs_user: "client.k8s"

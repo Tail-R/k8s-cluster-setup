@@ -1,0 +1,18 @@
+- name: Ensure HandleLidSwitch is set to ignore
+  lineinfile:
+    path: /etc/systemd/logind.conf
+    regexp: '^#?HandleLidSwitch\s*='
+    line: 'HandleLidSwitch=ignore'
+    create: yes
+
+- name: Ensure HandleLidSwitchDocked is set to ignore
+  lineinfile:
+    path: /etc/systemd/logind.conf
+    regexp: '^#?HandleLidSwitchDocked\s*='
+    line: 'HandleLidSwitchDocked=ignore'
+    create: yes
+
+- name: Restart systemd-logind to apply changes
+  systemd:
+    name: systemd-logind
+    state: restarted

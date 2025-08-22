@@ -1,0 +1,4 @@
+- name: Install required packages on the Ceph hosts
+  apt:
+    name: "{{ ceph_requirements }}"
+    state: present

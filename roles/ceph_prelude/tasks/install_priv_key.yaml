@@ -1,0 +1,34 @@
+- name: Ensure /root/.ssh exists on bootstrap
+  become: yes
+  file:
+    path: /root/.ssh
+    state: directory
+    owner: root
+    group: root
+    mode: '0700'
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['ceph_storage'] }}"
+
+- name: Install private key for bootstrap
+  become: yes
+  copy:
+    src: "{{ ssh_key_path }}"
+    dest: "/root/.ssh/id_rsa"
+    owner: root
+    group: root
+    mode: '0600'
+  delegate_to: ceph-node-1
+
+- name: Create SSH config
+  become: yes
+  copy:
+    dest: /root/.ssh/config
+    content: |
+      Host ceph-node-2 ceph-node-3
+          User root
+          IdentityFile /root/.ssh/id_rsa
+          StrictHostKeyChecking no
+    owner: root
+    group: root
+    mode: '0600'
+  delegate_to: ceph-node-1

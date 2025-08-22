@@ -24,7 +24,9 @@
 - name: Set join command fact
   set_fact:
     join_command: "{{ join_cmd_raw.stdout }}" # It allows you to pass a join command for workers
-  when: join_cmd_raw is defined and join_cmd_raw.stdout != ""
+  when:
+    - join_cmd_raw is defined
+    - join_cmd_raw.stdout != ""
 
 - name: Create .kube directory for remote user
   file:

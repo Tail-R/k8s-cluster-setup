@@ -1,50 +1,54 @@
 - name: Apply common configuration to all nodes
-  hosts: all
+  hosts: all:!localhost
   become: yes
   roles:
     - common
 
-##### Kubernetes ####################################################
-
-#
-# Common configurations that every K8s node requires
-#
-- name: Apply common configuration to all K8s nodes
-  hosts: k8s_all
-  become: yes
-  roles:
-    - k8s_common
-
-#
-# Init K8s control plane
-#
-- name: Init control plane nodes
-  hosts: k8s_control
-  become: yes
-  roles:
-    - k8s_control
-
-#
-# Join K8s workers
-#
-- name: Join worker nodes
-  hosts: k8s_workers
-  become: yes
-  roles:
-    - k8s_workers
-
-#
-# Apply K8s cluster manifests
-#
-- name: Apply K8s cluster manifests
-  hosts: k8s_control
-  become: yes
-  roles:
-    - manifests
-
 ##### Ceph ##########################################################
+- name: Distribute SSH key pairs to bootstrap/storage
+  hosts: localhost
+  roles:
+    - ceph_prelude
+
 - name: Apply common configurations to all Ceph nodes
   hosts: ceph_all
   become: yes
   roles:
     - ceph_common
+
+- name: Bootstrap CephFS cluster
+  hosts: ceph-node-1
+  become: yes
+  roles:
+    - ceph_bootstrap
+
+- name: Deploy CephFS cluster
+  hosts: ceph-node-1
+  become: yes
+  roles:
+    - ceph_daemons
+
+##### Kubernetes ####################################################
+- name: Apply common configurations to all K8s nodes
+  hosts: k8s_all
+  become: yes
+  roles:
+    - k8s_common
+
+- name: Initialize K8s control plane nodes
+  hosts: k8s_control
+  become: yes
+  roles:
+    - k8s_control
+
+- name: Join K8s worker nodes to the cluster
+  hosts: k8s_workers
+  become: yes
+  roles:
+    - k8s_workers
+
+- name: Overlay K8s cluster manifests
+  hosts: k8s_control
+  become: yes
+  roles:
+    - k8s_manifests

@@ -1,0 +1,24 @@
+- name: Get existing data pools
+  command: cephadm shell -- ceph osd pool ls
+  register: pool_list
+  changed_when: false
+
+- name: Create data pool if it doesn't exist
+  command: cephadm shell -- ceph osd pool create {{ ceph_data_pool }} {{ pg_num }} replicated
+  when: ceph_data_pool not in pool_list.stdout_lines
+  register: create_data_pool
+  changed_when: ceph_data_pool not in pool_list.stdout_lines
+
+- name: Set replication size for data pool
+  command: cephadm shell -- ceph osd pool set {{ ceph_data_pool }} size {{ replicas }}
+  when: create_data_pool is changed
+
+- name: Create metadata pool if it doesn't exist
+  command: cephadm shell -- ceph osd pool create {{ ceph_metadata_pool }} {{ pg_num }} replicated
+  when: ceph_metadata_pool not in pool_list.stdout_lines
+  register: create_metadata_pool
+  changed_when: ceph_metadata_pool not in pool_list.stdout_lines
+
+- name: Set replication size for metadata pool
+  command: cephadm shell -- ceph osd pool set {{ ceph_metadata_pool }} size {{ replicas }}
+  when: create_metadata_pool is changed

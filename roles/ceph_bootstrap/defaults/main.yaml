@@ -1,0 +1,7 @@
+# Ceph configurations
+dashboard_user: "ceph_admin"
+dashboard_pass: "12345"
+
+ceph_conf_path: "/etc/ceph/ceph.conf"
+ceph_pub_key_path: "/etc/ceph/ceph.pub"
+ceph_network_cidr: "192.168.100.0/24"

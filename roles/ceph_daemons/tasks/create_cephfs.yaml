@@ -1,0 +1,28 @@
+- name: Get existing CephFS
+  command: cephadm shell -- ceph fs ls
+  register: fs_list
+  changed_when: false
+
+- name: Create CephFS if it doesn't exist
+  command: cephadm shell -- ceph fs new {{ ceph_fs_name }} {{ ceph_metadata_pool }} {{ ceph_data_pool }}
+  when: ceph_fs_name not in fs_list.stdout_lines
+
+- name: Create CephFS user if it doesn't exist
+  command: >
+    cephadm shell -- ceph auth get-or-create {{ ceph_fs_user }}
+    mon 'allow r'
+    mds 'allow rw'
+    osd 'allow rw pool={{ ceph_data_pool }}, allow rw pool={{ ceph_metadata_pool }}'
+
+- name: List all Ceph authentication entities
+  command: cephadm shell -- ceph auth ls
+  register: ceph_auth
+  changed_when: false
+
+- name: Extract only client users
+  set_fact:
+    ceph_client_users: "{{ ceph_auth.stdout_lines | select('match', '^client\\.') | list }}"
+
+- name: Authorize CephFS user
+  command: cephadm shell -- ceph fs authorize {{ ceph_fs_name }} {{ ceph_fs_user }} / rw
+  when: ceph_fs_user not in ceph_client_users

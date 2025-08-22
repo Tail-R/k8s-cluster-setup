@@ -1,0 +1,41 @@
+- name: Get existing OSDs
+  command: cephadm shell -- ceph orch ps --daemon-type osd -f json
+  register: osd_list
+  changed_when: false
+  delegate_to: ceph-node-1
+
+- name: Create a list of hosts with OSDs
+  set_fact:
+    hosts_with_osd: "{{ osd_list.stdout | from_json | map(attribute='hostname') | list }}"
+
+- name: Create PV on host
+  community.general.lvm_pv:
+    device: "{{ ceph_pv_label }}"
+    state: present
+  when: item not in hosts_with_osd
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['ceph_osd'] }}"
+
+- name: Create VG on host
+  community.general.lvg:
+    pvs: "{{ ceph_pv_label }}"
+    vg: "{{ ceph_vg_label }}"
+    state: present
+  when: item not in hosts_with_osd
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['ceph_osd'] }}"
+
+- name: Create LV on host
+  community.general.lvol:
+    vg: "{{ ceph_vg_label }}"
+    lv: "{{ ceph_lv_label }}"
+    size: 100%FREE
+    state: present
+  when: item not in hosts_with_osd
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['ceph_osd'] }}"
+
+- name: Add OSDs
+  command: sudo cephadm shell -- ceph orch daemon add osd {{ item }}:{{ ceph_lvm_label }}
+  when: item not in hosts_with_osd
+  loop: "{{ groups['ceph_osd'] }}"
