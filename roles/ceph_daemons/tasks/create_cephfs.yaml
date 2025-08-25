@@ -5,7 +5,7 @@
 
 - name: Create CephFS if it doesn't exist
   command: cephadm shell -- ceph fs new {{ ceph_fs_name }} {{ ceph_metadata_pool }} {{ ceph_data_pool }}
-  when: ceph_fs_name not in fs_list.stdout_lines
+  when: ceph_fs_name not in fs_list.stdout
 
 - name: Create CephFS user if it doesn't exist
   command: >
@@ -13,6 +13,13 @@
     mon 'allow r'
     mds 'allow rw'
     osd 'allow rw pool={{ ceph_data_pool }}, allow rw pool={{ ceph_metadata_pool }}'
+    -f json
+  register: ceph_fs_user_key
+  changed_when: false
+
+- name: Extract Ceph key
+  set_fact:
+    ceph_fs_user_secret: "{{ (ceph_fs_user_key.stdout | from_json)[0].key }}"
 
 - name: List all Ceph authentication entities
   command: cephadm shell -- ceph auth ls

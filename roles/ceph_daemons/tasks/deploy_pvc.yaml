@@ -1,0 +1,24 @@
+- name: Apply RBAC for CephFS CSI
+  command: kubectl apply -f {{ ceph_csi_repo }}/csi-cephfs-controller-rbac.yaml --kubeconfig {{ kubeconfig_path }}
+  delegate_to: k8s-control-node-1
+
+- name: Apply CephFS CSI Controller Deployment
+  command: kubectl apply -f {{ ceph_csi_repo }}/csi-cephfsplugin-provisioner.yaml --kubeconfig {{ kubeconfig_path }}
+  delegate_to: k8s-control-node-1
+
+- name: Apply CephFS CSI Node DaemonSet
+  command: kubectl apply -f {{ ceph_csi_repo }}/csi-cephfsplugin.yaml --kubeconfig {{ kubeconfig_path }}
+  delegate_to: k8s-control-node-1
+
+- name: Wait for CephFS CSI pods to be running
+  kubernetes.core.k8s_info:
+    kubeconfig: "{{ kubeconfig_path }}"
+    kind: Pod
+    namespace: kube-system
+    label_selectors:
+      - "app=cephfs-csi"
+  register: csi_pods
+  until: csi_pods.resources | length > 0 and (csi_pods.resources | map(attribute='status.phase') | list | unique) == ['Running']
+  retries: 10
+  delay: 6
+  delegate_to: k8s-control-node-1

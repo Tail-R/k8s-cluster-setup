@@ -16,3 +16,4 @@
   systemd:
     name: systemd-logind
     state: restarted
+  changed_when: false

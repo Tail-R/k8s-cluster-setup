@@ -32,3 +32,12 @@ ceph_fs_name: "bullet-hell-fs"
 
 # CephFS user
 ceph_fs_user: "client.k8s"
+
+# K8s resource names
+k8s_namespace: "game-server-dev"
+k8s_secret_name: "cephfs-secret"
+k8s_sc_name: "cephfs-sc"
+k8s_pv_name: "cephfs-pv"
+k8s_pvc_name: "cephfs-pvc"
+ceph_csi_version: "release-3.11.0"
+ceph_csi_repo: "https://raw.githubusercontent.com/ceph/ceph-csi/{{ ceph_csi_version }}/deploy/kubernetes/cephfs"

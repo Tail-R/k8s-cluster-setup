@@ -1,0 +1,110 @@
+- name: Create K8s Secret for CephFS
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_path }}"
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: "{{ k8s_secret_name }}"
+        namespace: "{{ k8s_namespace }}"
+      stringData:
+        userID: "{{ ceph_fs_user }}"
+        userKey: "{{ ceph_fs_user_secret }}"
+  delegate_to: k8s-control-node-1
+
+- name: Get Ceph cluster FSID
+  command: cephadm shell -- ceph fsid
+  register: ceph_fsid
+  changed_when: false
+
+- name: Create CephFS StorageClass
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_path }}"
+    state: present
+    definition:
+      apiVersion: storage.k8s.io/v1
+      kind: StorageClass
+      metadata:
+        name: "{{ k8s_sc_name }}"
+      provisioner: cephfs.csi.ceph.com
+      parameters:
+        clusterID: "{{ ceph_fsid.stdout }}"
+        fsName: "{{ ceph_fs_name }}"
+        pool: "{{ ceph_data_pool }}"
+        csi.storage.k8s.io/provisioner-secret-name: "{{ k8s_secret_name }}"
+        csi.storage.k8s.io/provisioner-secret-namespace: "{{ k8s_namespace }}"
+        csi.storage.k8s.io/node-stage-secret-name: "{{ k8s_secret_name }}"
+        csi.storage.k8s.io/node-stage-secret-namespace: "{{ k8s_namespace }}"
+      reclaimPolicy: Retain
+      allowVolumeExpansion: true
+  delegate_to: k8s-control-node-1
+
+- name: Create CephFS PersistentVolume
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_path }}"
+    state: present
+    definition:
+      apiVersion: v1
+      kind: PersistentVolume
+      metadata:
+        name: "{{ k8s_pv_name }}"
+      spec:
+        capacity:
+          storage: 10Gi
+        accessModes:
+          - ReadWriteMany
+        persistentVolumeReclaimPolicy: Retain
+        csi:
+          driver: cephfs.csi.ceph.com
+          fsType: ceph
+          volumeAttributes:
+            clusterID: "{{ ceph_fsid.stdout }}"
+            fsName: "{{ ceph_fs_name }}"
+          nodeStageSecretRef:
+            name: "{{ k8s_secret_name }}"
+            namespace: "{{ k8s_namespace }}"
+          volumeHandle: "{{ k8s_pv_name }}"
+  delegate_to: k8s-control-node-1
+
+- name: Create PersistentVolumeClaim
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_path }}"
+    state: present
+    definition:
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: "{{ k8s_pvc_name }}"
+        namespace: "{{ k8s_namespace }}"
+      spec:
+        accessModes:
+          - ReadWriteMany
+        resources:
+          requests:
+            storage: 10Gi
+  delegate_to: k8s-control-node-1
+
+- name: Create a test Pod using the CephFS PVC
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_path }}"
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: cephfs-test
+        namespace: "{{ k8s_namespace }}"
+      spec:
+        containers:
+          - name: app
+            image: busybox
+            command: [ "sleep", "3600" ]
+            volumeMounts:
+              - name: cephfs-vol
+                mountPath: /mnt/cephfs
+        volumes:
+          - name: cephfs-vol
+            persistentVolumeClaim:
+              claimName: "{{ k8s_pvc_name }}"
+  delegate_to: k8s-control-node-1

@@ -4,3 +4,4 @@
     type: rsa
     size: 4096
     force: false
+  changed_when: false
