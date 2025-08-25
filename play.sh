@@ -4,7 +4,7 @@ set -euo pipefail
 
 PLAYBOOK="site.yaml"
 
-SSH_KEY="${HOME}/.ssh/id_ed25519"
+SSH_KEY="${HOME}/.ssh/my_cluster_key"
 
 # Check whether the SSH key exists
 if [ ! -f "${SSH_KEY}" ]; then
