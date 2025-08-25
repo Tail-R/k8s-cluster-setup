@@ -14,7 +14,7 @@
 - import_tasks: create_cephfs.yaml
 
 # Deploy PVC on Kubernetes cluster
-- import_tasks: deploy_pvc.yaml
+- import_tasks: deploy_csi.yaml
 
 # Mount CephFS from the Kubernetes cluster
 - import_tasks: mount_cephfs.yaml

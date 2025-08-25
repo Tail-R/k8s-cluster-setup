@@ -40,33 +40,6 @@
       allowVolumeExpansion: true
   delegate_to: k8s-control-node-1
 
-- name: Create CephFS PersistentVolume
-  kubernetes.core.k8s:
-    kubeconfig: "{{ kubeconfig_path }}"
-    state: present
-    definition:
-      apiVersion: v1
-      kind: PersistentVolume
-      metadata:
-        name: "{{ k8s_pv_name }}"
-      spec:
-        capacity:
-          storage: 10Gi
-        accessModes:
-          - ReadWriteMany
-        persistentVolumeReclaimPolicy: Retain
-        csi:
-          driver: cephfs.csi.ceph.com
-          fsType: ceph
-          volumeAttributes:
-            clusterID: "{{ ceph_fsid.stdout }}"
-            fsName: "{{ ceph_fs_name }}"
-          nodeStageSecretRef:
-            name: "{{ k8s_secret_name }}"
-            namespace: "{{ k8s_namespace }}"
-          volumeHandle: "{{ k8s_pv_name }}"
-  delegate_to: k8s-control-node-1
-
 - name: Create PersistentVolumeClaim
   kubernetes.core.k8s:
     kubeconfig: "{{ kubeconfig_path }}"
