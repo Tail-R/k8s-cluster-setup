@@ -31,13 +31,14 @@ ceph_metadata_pool: "bullet-hell-play-log-meta"
 ceph_fs_name: "bullet-hell-fs"
 
 # CephFS user
-ceph_fs_user: "client.k8s"
+ceph_user: "client.k8s"
 
 # K8s resource names
-k8s_namespace: "game-server-dev"
-k8s_secret_name: "cephfs-secret"
-k8s_sc_name: "cephfs-sc"
-k8s_pv_name: "cephfs-pv"
-k8s_pvc_name: "cephfs-pvc"
-ceph_csi_version: "release-3.11.0"
-ceph_csi_repo: "https://raw.githubusercontent.com/ceph/ceph-csi/{{ ceph_csi_version }}/deploy/kubernetes/cephfs"
+ceph_namespace: "kube-system"
+ceph_secret_name: "cephfs-secret"
+ceph_sc_name: "cephfs-sc"
+ceph_pvc_name: "cephfs-pvc"
+
+csi_helm_release_name: "ceph-csi"
+csi_helm_repo_url: "https://ceph.github.io/csi-charts"
+csi_helm_chart_name: "ceph-csi/ceph-csi-cephfs"

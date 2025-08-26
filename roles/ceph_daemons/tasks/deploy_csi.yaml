@@ -1,24 +1,26 @@
-- name: Apply RBAC for CephFS CSI
-  command: kubectl apply -f {{ ceph_csi_repo }}/csi-cephfs-controller-rbac.yaml --kubeconfig {{ kubeconfig_path }}
+- name: Add Ceph CSI Helm repo
+  community.kubernetes.helm_repository:
+    name: "{{ csi_helm_release_name }}"
+    repo_url: "{{ csi_helm_repo_url }}"
+    state: present
   delegate_to: k8s-control-node-1
 
-- name: Apply CephFS CSI Controller Deployment
-  command: kubectl apply -f {{ ceph_csi_repo }}/csi-cephfsplugin-provisioner.yaml --kubeconfig {{ kubeconfig_path }}
-  delegate_to: k8s-control-node-1
-
-- name: Apply CephFS CSI Node DaemonSet
-  command: kubectl apply -f {{ ceph_csi_repo }}/csi-cephfsplugin.yaml --kubeconfig {{ kubeconfig_path }}
-  delegate_to: k8s-control-node-1
-
-- name: Wait for CephFS CSI pods to be running
-  kubernetes.core.k8s_info:
+- name: Deploy CephFS CSI Helm chart
+  community.kubernetes.helm:
     kubeconfig: "{{ kubeconfig_path }}"
-    kind: Pod
-    namespace: kube-system
-    label_selectors:
-      - "app=cephfs-csi"
-  register: csi_pods
-  until: csi_pods.resources | length > 0 and (csi_pods.resources | map(attribute='status.phase') | list | unique) == ['Running']
-  retries: 10
-  delay: 6
+    name: "{{ csi_helm_release_name }}"
+    chart_ref: "{{ csi_helm_chart_name }}"
+    release_namespace: "{{ ceph_namespace }}"
+    create_namespace: true
+    values:
+      csiPlugin:
+        rbac:
+          create: true
+        nodeStageSecretName: "{{ csi_secret_name }}"
+        nodeStageSecretNamespace: "{{ csi_secret_namespace }}"
+      provisioner:
+        rbac:
+          create: true
+        provisionerSecretName: "{{ csi_secret_name }}"
+        provisionerSecretNamespace: "{{ csi_secret_namespace }}"
   delegate_to: k8s-control-node-1

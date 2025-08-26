@@ -9,17 +9,17 @@
 
 - name: Create CephFS user if it doesn't exist
   command: >
-    cephadm shell -- ceph auth get-or-create {{ ceph_fs_user }}
+    cephadm shell -- ceph auth get-or-create {{ ceph_user }}
     mon 'allow r'
     mds 'allow rw'
     osd 'allow rw pool={{ ceph_data_pool }}, allow rw pool={{ ceph_metadata_pool }}'
     -f json
-  register: ceph_fs_user_key
+  register: ceph_user_key
   changed_when: false
 
 - name: Extract Ceph key
   set_fact:
-    ceph_fs_user_secret: "{{ (ceph_fs_user_key.stdout | from_json)[0].key }}"
+    ceph_user_secret: "{{ (ceph_user_key.stdout | from_json)[0].key }}"
 
 - name: List all Ceph authentication entities
   command: cephadm shell -- ceph auth ls
@@ -31,5 +31,5 @@
     ceph_client_users: "{{ ceph_auth.stdout_lines | select('match', '^client\\.') | list }}"
 
 - name: Authorize CephFS user
-  command: cephadm shell -- ceph fs authorize {{ ceph_fs_name }} {{ ceph_fs_user }} / rw
-  when: ceph_fs_user not in ceph_client_users
+  command: cephadm shell -- ceph fs authorize {{ ceph_fs_name }} {{ ceph_user }} / rw
+  when: ceph_user not in ceph_client_users
