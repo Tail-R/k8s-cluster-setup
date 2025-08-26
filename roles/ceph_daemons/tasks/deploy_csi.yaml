@@ -1,26 +1,47 @@
+- name: Get Ceph cluster FSID
+  command: cephadm shell -- ceph fsid
+  register: ceph_fsid_result
+
+- name: Set clusterID fact
+  set_fact:
+    ceph_cluster_id: "{{ ceph_fsid_result.stdout | trim }}"
+
+- debug:
+    var: ceph_cluster_id
+
 - name: Add Ceph CSI Helm repo
   community.kubernetes.helm_repository:
-    name: "{{ csi_helm_release_name }}"
+    name: "{{ csi_helm_repo_name }}"
     repo_url: "{{ csi_helm_repo_url }}"
     state: present
   delegate_to: k8s-control-node-1
 
-- name: Deploy CephFS CSI Helm chart
+- name: Deploy CephFS CSI Helm chart (3.15)
   community.kubernetes.helm:
     kubeconfig: "{{ kubeconfig_path }}"
     name: "{{ csi_helm_release_name }}"
     chart_ref: "{{ csi_helm_chart_name }}"
     release_namespace: "{{ ceph_namespace }}"
     create_namespace: true
+    state: present
     values:
-      csiPlugin:
-        rbac:
-          create: true
-        nodeStageSecretName: "{{ csi_secret_name }}"
-        nodeStageSecretNamespace: "{{ csi_secret_namespace }}"
-      provisioner:
-        rbac:
-          create: true
-        provisionerSecretName: "{{ csi_secret_name }}"
-        provisionerSecretNamespace: "{{ csi_secret_namespace }}"
+      csiConfig:
+        - clusterID: "{{ ceph_cluster_id }}"
+          monitors:
+            - "192.168.100.40:6789"
+            - "192.168.100.41:6789"
+            - "192.168.100.42:6789"
+          cephFS:
+            enabled: true
+            fsName: "{{ ceph_fs_name }}"
+            pool: "{{ ceph_data_pool }}"
+            provisionerSecretName: "{{ ceph_secret_name }}"
+            nodeSecretName: "{{ ceph_secret_name }}"
+            driverName: "cephfs.csi.ceph.com"
+          rbd:
+            enabled: false
+          provisioner:
+            name: provisioner
+            replicaCount: 2
   delegate_to: k8s-control-node-1
+

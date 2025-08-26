@@ -1,0 +1,93 @@
+- name: Get Ceph cluster FSID
+  command: cephadm shell -- ceph fsid
+  register: ceph_fsid_result
+
+- name: Set clusterID fact
+  set_fact:
+    ceph_cluster_id: "{{ ceph_fsid_result.stdout }}"
+
+- debug:
+    var: ceph_cluster_id
+
+- name: Check if StorageClass exists
+  kubernetes.core.k8s_info:
+    kubeconfig: "{{ kubeconfig_path }}"
+    kind: StorageClass
+    name: "{{ ceph_sc_name }}"
+  register: sc_info
+  delegate_to: k8s-control-node-1
+
+- name: Create StorageClass
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_path }}"
+    state: present
+    definition:
+      apiVersion: storage.k8s.io/v1
+      kind: StorageClass
+      metadata:
+        name: "{{ ceph_sc_name }}"
+      provisioner: cephfs.csi.ceph.com
+      parameters:
+        userID: "{{ ceph_user_name }}"
+        clusterID: "{{ ceph_cluster_id }}" 
+        fsName: "{{ ceph_fs_name }}"
+        pool: "{{ ceph_data_pool }}"
+        csi.storage.k8s.io/provisioner-secret-name: "{{ ceph_secret_name }}"
+        csi.storage.k8s.io/provisioner-secret-namespace: "{{ ceph_namespace }}"
+        csi.storage.k8s.io/node-stage-secret-name: "{{ ceph_secret_name }}"
+        csi.storage.k8s.io/node-stage-secret-namespace: "{{ ceph_namespace }}"
+      reclaimPolicy: Delete
+      volumeBindingMode: Immediate
+  delegate_to: k8s-control-node-1
+  when: sc_info.resources | length == 0
+
+- name: Ensure PVC namespace exists
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_path }}"
+    api_version: v1
+    kind: Namespace
+    name: "{{ app_namespace }}"
+    state: present
+  delegate_to: k8s-control-node-1
+
+- name: Check if PVC exists
+  kubernetes.core.k8s_info:
+    kubeconfig: "{{ kubeconfig_path }}"
+    kind: PersistentVolumeClaim
+    namespace: "{{ app_namespace }}"
+    name: "{{ ceph_pvc_name }}"
+  register: pvc_info
+  delegate_to: k8s-control-node-1
+
+- name: Create PVC
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_path }}"
+    state: present
+    definition:
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: "{{ ceph_pvc_name }}"
+        namespace: "{{ app_namespace }}"
+      spec:
+        accessModes:
+          - ReadWriteMany
+        resources:
+          requests:
+            storage: 5Gi
+        storageClassName: "{{ ceph_sc_name }}"
+  delegate_to: k8s-control-node-1
+  when: pvc_info.resources | length == 0
+
+- name: Wait for PVC to be bound
+  kubernetes.core.k8s_info:
+    kubeconfig: "{{ kubeconfig_path }}"
+    kind: PersistentVolumeClaim
+    namespace: "{{ app_namespace }}"
+    name: "{{ ceph_pvc_name }}"
+  register: pvc_info
+  until: pvc_info.resources[0].status.phase == "Bound"
+  retries: 30
+  delay: 10
+  delegate_to: k8s-control-node-1
+

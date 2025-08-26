@@ -11,8 +11,9 @@
   command: >
     cephadm shell -- ceph auth get-or-create {{ ceph_user }}
     mon 'allow r'
-    mds 'allow rw'
-    osd 'allow rw pool={{ ceph_data_pool }}, allow rw pool={{ ceph_metadata_pool }}'
+    mgr 'allow *'
+    mds 'allow *'
+    osd 'allow rwx pool={{ ceph_data_pool }}, allow rwx pool={{ ceph_metadata_pool }}'
     -f json
   register: ceph_user_key
   changed_when: false
@@ -20,6 +21,9 @@
 - name: Extract Ceph key
   set_fact:
     ceph_user_secret: "{{ (ceph_user_key.stdout | from_json)[0].key }}"
+
+- debug:
+    var: ceph_user_secret
 
 - name: List all Ceph authentication entities
   command: cephadm shell -- ceph auth ls
@@ -33,3 +37,4 @@
 - name: Authorize CephFS user
   command: cephadm shell -- ceph fs authorize {{ ceph_fs_name }} {{ ceph_user }} / rw
   when: ceph_user not in ceph_client_users
+

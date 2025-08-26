@@ -32,6 +32,7 @@ ceph_fs_name: "bullet-hell-fs"
 
 # CephFS user
 ceph_user: "client.k8s"
+ceph_user_name: "k8s"
 
 # K8s resource names
 ceph_namespace: "kube-system"
@@ -39,6 +40,9 @@ ceph_secret_name: "cephfs-secret"
 ceph_sc_name: "cephfs-sc"
 ceph_pvc_name: "cephfs-pvc"
 
-csi_helm_release_name: "ceph-csi"
+csi_helm_repo_name: "ceph-csi"
 csi_helm_repo_url: "https://ceph.github.io/csi-charts"
+csi_helm_release_name: "ceph-csicephfs"
 csi_helm_chart_name: "ceph-csi/ceph-csi-cephfs"
+
+app_namespace: "game-server-dev"
