@@ -19,3 +19,7 @@
 
 # Mount CephFS from the Kubernetes cluster
 - import_tasks: mount_cephfs.yaml
+
+# Deploy Test Pod on Kubernetes cluster
+- import_tasks: deploy_testpod.yaml
+
