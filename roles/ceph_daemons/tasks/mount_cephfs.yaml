@@ -90,4 +90,3 @@
   retries: 30
   delay: 10
   delegate_to: k8s-control-node-1
-

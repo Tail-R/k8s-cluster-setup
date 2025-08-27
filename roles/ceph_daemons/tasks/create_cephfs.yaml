@@ -37,4 +37,3 @@
 - name: Authorize CephFS user
   command: cephadm shell -- ceph fs authorize {{ ceph_fs_name }} {{ ceph_user }} / rw
   when: ceph_user not in ceph_client_users
-
