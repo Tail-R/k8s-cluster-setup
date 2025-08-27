@@ -7,6 +7,9 @@
 # Synchronize the system clock
 - import_tasks: enable_ntp.yaml
 
+# Create /etc/resolv.conf
+- import_tasks: link_resolve_conf.yaml
+
 # Disable swap for Kubernetes
 - import_tasks: disable_swap.yaml
 
