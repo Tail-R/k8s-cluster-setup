@@ -22,7 +22,7 @@ Also, the provisioning is idempotent, so you can create a cluster or add nodes t
     - Deploy components like MON, OSD, Data Pool, FS, MDS
 
 ## Dependencies
-- ansible 2.16.0 >=
+- ansible 2.16.0
 
 ## How to Use
 
