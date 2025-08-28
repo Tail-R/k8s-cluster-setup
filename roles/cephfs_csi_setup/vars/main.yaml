@@ -39,6 +39,7 @@ ceph_namespace: "kube-system"
 ceph_secret_name: "cephfs-secret"
 ceph_sc_name: "cephfs-sc"
 ceph_pvc_name: "cephfs-pvc"
+ceph_subvolgroup_name: "csi"
 
 csi_helm_repo_name: "ceph-csi"
 csi_helm_repo_url: "https://ceph.github.io/csi-charts"

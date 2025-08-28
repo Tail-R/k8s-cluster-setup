@@ -1,0 +1,11 @@
+- name: Check if csi subvolumegroup exists
+  command: >
+    ceph fs subvolumegroup ls {{ ceph_fs_name }}
+  register: subvol_list
+  changed_when: false
+  failed_when: false
+
+- name: Create csi subvolumegroup if not exists
+  command: >
+    ceph fs subvolumegroup create {{ ceph_fs_name }} {{ ceph_subvolgroup_name }}
+  when: '"csi" not in subvol_list.stdout'

@@ -21,4 +21,3 @@
             persistentVolumeClaim:
               claimName: "{{ ceph_pvc_name }}"
   delegate_to: k8s-control-node-1
-

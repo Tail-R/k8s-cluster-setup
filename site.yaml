@@ -41,14 +41,14 @@
   roles:
     - ceph_common
 
-- name: Bootstrap CephFS cluster
+- name: Bootstrap Ceph cluster
   hosts: ceph-node-1
   become: yes
   roles:
     - ceph_bootstrap
 
-- name: Deploy CephFS cluster
+- name: Deploy CephFS and mount it from K8s cluster
   hosts: ceph-node-1
   become: yes
   roles:
-    - ceph_daemons
+    - cephfs_csi_setup
