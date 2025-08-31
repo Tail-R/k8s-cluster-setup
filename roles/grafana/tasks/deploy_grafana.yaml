@@ -5,6 +5,7 @@
 
 - name: Create a namespace for grafana (if not exists)
   kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_path }}"
     api_version: v1
     kind: Namespace
     name: "{{ grafana_namespace }}"
@@ -14,7 +15,7 @@
   kubernetes.core.helm:
     kubeconfig: "{{ kubeconfig_path }}"
     name: "{{ grafana_helm_release_name }}"
-    chart_ref: "{{ grafana_helm_repo_url }}"
+    chart_ref: "{{ grafana_helm_chart_name }}"
     release_namespace: "{{ grafana_namespace }}"
     create_namespace: false
     values:
