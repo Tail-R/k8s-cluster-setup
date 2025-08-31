@@ -55,7 +55,7 @@
 
 ##### Prometheus ####################################################
 - name: Deploy Prometheus Server/Node Exporter on Kubernetes cluster
-  hosts: k8s_control-node-1
+  hosts: k8s-control-node-1
   become: yes
   roles:
     - prometheus
