@@ -1,6 +1,12 @@
+#
+# The community.general is used to create pv, vg, lv on LVM.
+#
+# --------------------------------------------------------------------
+# community.general.lvm_pv:
+# community.general.lvg:
+# community.general.lvol:
+# --------------------------------------------------------------------
+#
 collections:
   - name: community.general
     version: "11.2.1"
-
-  - name: community.kubernetes
-    version: "1.2.1"
