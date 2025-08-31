@@ -9,7 +9,7 @@
         name: "{{ prometheus_pv_name }}"
       spec:
         capacity:
-          storage: "{{ promehteus_pv_size }}"
+          storage: "{{ prometheus_pv_size }}"
         accessModes:
           - ReadWriteOnce
         persistentVolumeReclaimPolicy: Retain
