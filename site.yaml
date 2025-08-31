@@ -54,7 +54,7 @@
     - cephfs_csi_setup
 
 ##### Prometheus ####################################################
-- name: Deploy Prometheus Server on Kubernetes control plane node
+- name: Deploy Prometheus Server on Kubernetes cluster
   hosts: k8s_control-node-1
   become: yes
   roles:
