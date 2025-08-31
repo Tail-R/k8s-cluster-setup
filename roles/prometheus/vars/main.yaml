@@ -9,7 +9,7 @@ prometheus_pv_node: "k8s-node-1"
 # Prometheus configurations
 prometheus_helm_repo_url: "https://prometheus-community.github.io/helm-charts"
 prometheus_release_name: "prometheus"
-prometheus_chart_name: "45.0.0"
+prometheus_chart_name: "27.32.0"
 prometheus_node_targets:
   - "192.168.100.10:9100"
   - "192.168.100.20:9100"
