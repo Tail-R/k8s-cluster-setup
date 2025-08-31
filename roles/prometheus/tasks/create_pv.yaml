@@ -1,3 +1,12 @@
+- name: Ensure Promehteus PV directory exists on target worker node
+  ansible.builtin.file:
+    path: "{{ prometheus_pv_path }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  delegate_to: k8s-worker-node-1
+
 - name: Create PersistentVolume for Prometheus
   kubernetes.core.k8s:
     kubeconfig: "{{ kubeconfig_path }}"
