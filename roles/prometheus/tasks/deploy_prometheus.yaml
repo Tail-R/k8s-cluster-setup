@@ -22,6 +22,8 @@
     values:
       alertmanager:
         enabled: false
+      nodeExporter:
+        enabled: true
       server:
         persistentVolume:
           enabled: true

@@ -1,2 +1,3 @@
+- import_tasks: create_sc.yaml
 - import_tasks: create_pv.yaml
 - import_tasks: deploy_prometheus.yaml
