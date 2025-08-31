@@ -1,0 +1,34 @@
+- name: Ensure prometheus namespace exists
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_path }}"
+    api_version: v1
+    kind: Namespace
+    name: "{{ prometheus_namespace }}"
+    state: present
+
+- name: Add prometheus-community Helm repo
+  kubernetes.core.helm_repository:
+    name: prometheus-community
+    repo_url: "{{ prometheus_helm_repo_url }}"
+    state: present
+
+- name: Deploy Prometheus using Helm
+  kubernetes.core.helm:
+    kubeconfig: "{{ kubeconfig_path }}"
+    name: "{{ prometheus_release_name }}"
+    chart_ref: prometheus-community/prometheus
+    chart_version: "{{ prometheus_chart_name }}"
+    namespace: "{{ prometheus_namespace }}"
+    values:
+      alertmanager:
+        enabled: false
+      server:
+        persistentVolume:
+          enabled: true
+          size: 8Gi
+        global:
+          scrape_interval: 15s
+        extraScrapeConfigs: |
+          - job_name: 'node-exporter'
+            static_configs:
+              - targets: {{ prometheus_node_targets }}

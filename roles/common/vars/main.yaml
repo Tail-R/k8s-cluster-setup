@@ -4,6 +4,7 @@ base_pkgs_pacman:
   - python3
   - python-pip
   - curl
+  - lm_sensors
 
 base_pkgs_apt:
   - git
@@ -11,3 +12,4 @@ base_pkgs_apt:
   - python3
   - python3-pip
   - curl
+  - lm-sensors
