@@ -6,6 +6,6 @@
       apiVersion: storage.k8s.io/v1
       kind: StorageClass
       metadata:
-        name: "{{ prometheus_pv_storage_class }}"
+        name: "{{ prometheus_pv_sc_name }}"
       provisioner: kubernetes.io/no-provisioner
       volumeBindingMode: WaitForFirstConsumer

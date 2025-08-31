@@ -2,9 +2,10 @@
 prometheus_namespace: "monitoring"
 prometheus_pv_name: "prometheus-pv"
 prometheus_pv_path: "/mnt/data/prometheus"
-prometheus_pv_storage_class: "local-storage"
+prometheus_pv_sc_name: "local-storage"
 prometheus_pv_size: "8Gi"
-prometheus_pv_node: "k8s-node-1"
+prometheus_pv_node: "k8s-control-node-1"
+prometheus_scrape_interval: "15s"
 
 # Prometheus configurations
 prometheus_helm_repo_url: "https://prometheus-community.github.io/helm-charts"
