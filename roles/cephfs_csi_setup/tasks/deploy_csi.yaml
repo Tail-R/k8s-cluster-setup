@@ -11,7 +11,7 @@
 
 - name: Add Ceph CSI Helm repo
   kubernetes.core.helm_repository:
-    name: "{{ csi_helm_repo_name }}"
+    name: ceph-csi
     repo_url: "{{ csi_helm_repo_url }}"
     state: present
   delegate_to: k8s-control-node-1

@@ -1,13 +1,13 @@
-- name: Ensure Promehteus PV directory exists on target worker node
+- name: Ensure Grafana PV directory exists on target worker node
   ansible.builtin.file:
-    path: "{{ prometheus_pv_path }}"
+    path: "{{ grafana_pv_path }}"
     state: directory
     owner: root
     group: root
     mode: '0755'
-  delegate_to: "{{ prometheus_pv_node }}"
+  delegate_to: "{{ grafana_pv_node }}"
 
-- name: Create PersistentVolume for Prometheus
+- name: Create PersistentVolume for Grafana
   kubernetes.core.k8s:
     kubeconfig: "{{ kubeconfig_path }}"
     state: present
@@ -15,16 +15,16 @@
       apiVersion: v1
       kind: PersistentVolume
       metadata:
-        name: "{{ prometheus_pv_name }}"
+        name: "{{ grafana_pv_name }}"
       spec:
         capacity:
-          storage: "{{ prometheus_pv_size }}"
+          storage: "{{ grafana_pv_size }}"
         accessModes:
           - ReadWriteOnce
         persistentVolumeReclaimPolicy: Retain
-        storageClassName: "{{ prometheus_pv_sc_name }}"
+        storageClassName: "{{ grafana_pv_sc_name }}"
         local:
-          path: "{{ prometheus_pv_path }}"
+          path: "{{ grafana_pv_path }}"
         nodeAffinity:
           required:
             nodeSelectorTerms:
@@ -32,4 +32,4 @@
                   - key: kubernetes.io/hostname
                     operator: In
                     values:
-                      - "{{ prometheus_pv_node }}"
+                      - "{{ grafana_pv_node }}"

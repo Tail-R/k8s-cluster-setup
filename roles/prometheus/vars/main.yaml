@@ -9,8 +9,9 @@ prometheus_scrape_interval: "15s"
 
 # Prometheus configurations
 prometheus_helm_repo_url: "https://prometheus-community.github.io/helm-charts"
-prometheus_release_name: "prometheus"
-prometheus_chart_name: "27.32.0"
+prometheus_helm_release_name: "prometheus"
+prometheus_helm_chart_name: "prometheus-community/prometheus"
+prometheus_helm_chart_version: "27.32.0"
 prometheus_node_targets:
   - "192.168.100.10:9100"
   - "192.168.100.20:9100"
