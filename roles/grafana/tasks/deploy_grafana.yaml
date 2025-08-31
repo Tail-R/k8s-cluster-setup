@@ -25,7 +25,7 @@
         accessModes:
           - ReadWriteOnce
         size: "{{ grafana_pv_size }}"
-      adminPassword: "admin123"
+      adminPassword: "{{ grafana_password }}"
       service:
         type: NodePort
         nodePort: 32000

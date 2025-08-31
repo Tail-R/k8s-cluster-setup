@@ -5,6 +5,7 @@ grafana_pv_path: "/mnt/data/grafana"
 grafana_pv_sc_name: "local-storage"
 grafana_pv_size: "5Gi"
 grafana_pv_node: "k8s-worker-node-1"
+grafana_password: "12345"
 
 # Grafana configurations
 grafana_helm_repo_url: "https://grafana.github.io/helm-charts"
