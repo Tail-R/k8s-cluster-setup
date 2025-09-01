@@ -25,6 +25,7 @@
       nodeExporter:
         enabled: true
       server:
+        retention: "{{ prometheus_retention_period }}"
         persistentVolume:
           enabled: true
           storageClass: "{{ prometheus_pv_sc_name }}"
