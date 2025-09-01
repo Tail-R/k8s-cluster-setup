@@ -2,8 +2,8 @@
   ansible.builtin.file:
     path: "{{ grafana_pv_path }}"
     state: directory
-    owner: root
-    group: root
+    owner: 472
+    group: 472
     mode: '0755'
   delegate_to: "{{ grafana_pv_node }}"
 
