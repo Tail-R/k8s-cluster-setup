@@ -25,6 +25,10 @@
       nodeExporter:
         enabled: true
       server:
+        additionalScrapeConfigs:
+          - job_name: 'ceph-mgr'
+            static_configs:
+              - targets: "{{ prometheus_node_targets }}"
         retention: "{{ prometheus_retention_period }}"
         persistentVolume:
           enabled: true
