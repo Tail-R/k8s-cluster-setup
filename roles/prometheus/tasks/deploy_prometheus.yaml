@@ -25,17 +25,21 @@
       nodeExporter:
         enabled: true
       server:
-        extraScrapeConfigs: |
-          - job_name: 'ceph-mgr'
-            static_configs:
-              - targets: ['192.168.100.42:9283']
-            metrics_path: /metrics
-            scrape_interval: 30s
         persistentVolume:
           enabled: true
           storageClass: "{{ prometheus_pv_sc_name }}"
           size: "{{ prometheus_pv_size }}"
         nodeSelector:
           kubernetes.io/hostname: "{{ prometheus_pv_node }}"
+      serverFiles:
+        prometheus.yml:
+          scrape_configs:
+            - job_name: prometheus
+              static_configs:
+                - targets:
+                  - localhost:9090
+            - job_name: ceph-mgr
+              static_configs:
+                - targets: "{{ prometheus_ceph_mgr_targets }}"
       global:
         scrape_interval: "{{ prometheus_scrape_interval }}"
