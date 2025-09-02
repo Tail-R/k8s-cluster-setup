@@ -22,6 +22,14 @@ Also, the provisioning is idempotent, so you can create a cluster or add nodes t
     - Bootstrap using cephadm, including SSH key installation
     - Deploy components like MON, OSD, Data Pool, FS, MDS
 
+- Automated Prometheus provisioning
+    - Deploy node-exporter
+    - Deploy kube-state-metrics
+    - Deploy Prometheus Server
+
+- Automated Grafana provisoning
+    - Deploy Grafana Server
+
 ## Dependencies
 - ansible 2.16.0
 
