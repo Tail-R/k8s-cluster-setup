@@ -38,7 +38,7 @@
               static_configs:
                 - targets:
                   - localhost:9090
-            - job_name: ceph-mgr
+            - job_name: "{{ prometheus_ceph_job_name }}"
               static_configs:
                 - targets: "{{ prometheus_ceph_mgr_targets }}"
       global:
