@@ -1,4 +1,4 @@
-- name: Ensure prometheus namespace exists
+- name: Ensure namespace for Prometheus exists
   kubernetes.core.k8s:
     kubeconfig: "{{ kubeconfig_path }}"
     api_version: v1
@@ -12,7 +12,7 @@
     repo_url: "{{ prometheus_helm_repo_url }}"
     state: present
 
-- name: Deploy Prometheus using Helm with extraScrapeConfigs
+- name: Deploy Prometheus using Helm
   kubernetes.core.helm:
     kubeconfig: "{{ kubeconfig_path }}"
     name: "{{ prometheus_helm_release_name }}"
