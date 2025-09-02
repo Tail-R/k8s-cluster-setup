@@ -12,7 +12,7 @@
     repo_url: "{{ prometheus_helm_repo_url }}"
     state: present
 
-- name: Deploy Prometheus using Helm
+- name: Deploy Prometheus using Helm with extraScrapeConfigs
   kubernetes.core.helm:
     kubeconfig: "{{ kubeconfig_path }}"
     name: "{{ prometheus_helm_release_name }}"
@@ -25,16 +25,17 @@
       nodeExporter:
         enabled: true
       server:
-        additionalScrapeConfigs:
+        extraScrapeConfigs: |
           - job_name: 'ceph-mgr'
             static_configs:
-              - targets: "{{ prometheus_node_targets }}"
-        retention: "{{ prometheus_retention_period }}"
+              - targets: ['192.168.100.42:9283']
+            metrics_path: /metrics
+            scrape_interval: 30s
         persistentVolume:
           enabled: true
           storageClass: "{{ prometheus_pv_sc_name }}"
           size: "{{ prometheus_pv_size }}"
-        global:
-          scrape_interval: "{{ prometheus_scrape_interval }}"
         nodeSelector:
           kubernetes.io/hostname: "{{ prometheus_pv_node }}"
+      global:
+        scrape_interval: "{{ prometheus_scrape_interval }}"
