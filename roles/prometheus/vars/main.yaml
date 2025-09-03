@@ -2,8 +2,8 @@
 prometheus_namespace: "monitoring"
 prometheus_pv_name: "prometheus-pv"
 prometheus_pv_path: "/mnt/data/prometheus"
-prometheus_pv_sc_name: "local-storage"
-prometheus_pv_size: "8Gi"
+prometheus_pv_sc_name: "prometheus-sc"
+prometheus_pv_size: "5Gi"
 prometheus_pv_node: "k8s-worker-node-1"
 prometheus_scrape_interval: "15s"
 
