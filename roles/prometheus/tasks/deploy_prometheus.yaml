@@ -20,26 +20,22 @@
     chart_version: "{{ prometheus_helm_chart_version }}"
     namespace: "{{ prometheus_namespace }}"
     values:
-      alertmanager:
-        enabled: false
-      nodeExporter:
-        enabled: true
       server:
+        global:
+          scrape_interval: "{{ prometheus_scrape_interval }}"
+        nodeSelector:
+          kubernetes.io/hostname: "{{ prometheus_pv_node }}"
         persistentVolume:
           enabled: true
           storageClass: "{{ prometheus_pv_sc_name }}"
           size: "{{ prometheus_pv_size }}"
-        nodeSelector:
-          kubernetes.io/hostname: "{{ prometheus_pv_node }}"
-      serverFiles:
-        prometheus.yml:
-          scrape_configs:
-            - job_name: prometheus
-              static_configs:
-                - targets:
-                  - localhost:9090
-            - job_name: "{{ prometheus_ceph_job_name }}"
-              static_configs:
-                - targets: "{{ prometheus_ceph_mgr_targets }}"
-      global:
-        scrape_interval: "{{ prometheus_scrape_interval }}"
+      extraScrapeConfigs: |
+        - job_name: "{{ prometheus_ceph_job_name }}"
+          static_configs:
+            - targets: "{{ prometheus_ceph_mgr_targets }}"
+      alertmanager:
+        enabled: false
+      kube-state-metrics:
+        enables: true
+      prometheus-node-exporter:
+        enabled: true
