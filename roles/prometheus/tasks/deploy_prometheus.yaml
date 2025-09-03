@@ -30,6 +30,18 @@
           storageClass: "{{ prometheus_pv_sc_name }}"
           size: "{{ prometheus_pv_size }}"
       extraScrapeConfigs: |
+        - job_name: "lm-sensors-exporter"
+          scheme: http
+          kubernetes_sd_configs:
+            - role: endpoints
+              namespaces:
+                names: ["{{ prometheus_namespace }}"]
+          relabel_configs:
+            - source_labels: [__meta_kubernetes_service_name]
+              action: keep
+              regex: lm-sensors-exporter
+          metrics_path: /metrics
+
         - job_name: "ceph-mgr"
           static_configs:
             - targets:
