@@ -39,7 +39,7 @@
           relabel_configs:
             - source_labels: [__meta_kubernetes_service_name]
               action: keep
-              regex: lm-sensors-exporter
+              regex: lm-sensors-exporter-headless
           metrics_path: /metrics
 
         - job_name: "ceph-mgr"
