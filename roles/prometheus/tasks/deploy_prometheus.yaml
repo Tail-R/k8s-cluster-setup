@@ -30,12 +30,15 @@
           storageClass: "{{ prometheus_pv_sc_name }}"
           size: "{{ prometheus_pv_size }}"
       extraScrapeConfigs: |
-        - job_name: "{{ prometheus_ceph_job_name }}"
+        - job_name: "ceph-mgr"
           static_configs:
-            - targets: "{{ prometheus_ceph_mgr_targets }}"
+            - targets:
+                - "192.168.100.40:9283"
+                - "192.168.100.41:9283"
+                - "192.168.100.42:9283"
       alertmanager:
         enabled: false
       kube-state-metrics:
-        enables: true
+        enabled: true
       prometheus-node-exporter:
         enabled: true
