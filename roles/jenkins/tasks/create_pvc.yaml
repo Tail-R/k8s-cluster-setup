@@ -15,7 +15,13 @@
     name: jenkins
     state: present
     definition:
-      spec:
+      metadata:
+        labels:
+          app.kubernetes.io/managed-by: Helm
+        annotations:
+          meta.helm.sh/release-name: "{{ jenkins_helm_release_name }}"
+          meta.helm.sh/release-namespace: "{{ jenkins_namespace }}"
+      spec:      
         accessModes: ["ReadWriteOnce"]
         resources:
           requests:
