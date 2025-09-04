@@ -22,6 +22,9 @@
       adminUser: "{{ jenkins_admin_name }}"
       adminPassword: "{{ jenkins_admin_pass }}"
       serviceType: ClusterIP
+      usePodSecurityContext: true
+      runAsUser: 1000
+      fsGroup: 1000
       resources:
         requests:
           memory: "{{ jenkins_request_mem }}"
