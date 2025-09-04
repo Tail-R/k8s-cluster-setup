@@ -26,7 +26,7 @@
         resources:
           requests:
             storage: "{{ jenkins_pv_size }}"
-        storageClassName: "{{ jenkins_pc_sc_name }}"
+        storageClassName: "{{ jenkins_pv_sc_name }}"
 
 - name: Run busybox Pod to fix /var/jenkins_home ownership
   kubernetes.core.k8s:
