@@ -9,7 +9,7 @@ jenkins_admin_name: "admin"
 jenkins_admin_pass: "12345"
 
 # Scheduling Policy
-jenkins_request_cpu: "500m"
+jenkins_request_cpu: "50m"
 jenkins_request_mem: "512Mi"
 jenkins_limit_cpu: "1"
 jenkins_limit_mem: "1Gi"

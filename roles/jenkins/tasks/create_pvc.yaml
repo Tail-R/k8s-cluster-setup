@@ -1,0 +1,67 @@
+- name: Ensure namespace for Jenkins exists
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_path }}"
+    api_version: v1
+    kind: Namespace
+    name: "{{ jenkins_namespace }}"
+    state: present
+
+- name: Create empty PVC for Jenkins
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_path }}"
+    api_version: v1
+    kind: PersistentVolumeClaim
+    namespace: "{{ jenkins_namespace }}"
+    name: jenkins
+    state: present
+    definition:
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: "{{ jenkins_pv_size }}"
+        storageClassName: "{{ jenkins_pc_sc_name }}"
+
+- name: Run busybox Pod to fix /var/jenkins_home ownership
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_path }}"
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: jenkins-fix-perms
+        namespace: "{{ jenkins_namespace }}"
+      spec:
+        restartPolicy: Never
+        volumes:
+          - name: jenkins-home
+            persistentVolumeClaim:
+              claimName: jenkins
+        containers:
+          - name: fixperms
+            image: busybox
+            command: ["sh", "-c", "chown -R 1000:1000 /var/jenkins_home"]
+            volumeMounts:
+              - name: jenkins-home
+                mountPath: /var/jenkins_home
+  register: pod_create
+
+- name: Wait for busybox pod to complete
+  kubernetes.core.k8s_info:
+    kubeconfig: "{{ kubeconfig_path }}"
+    kind: Pod
+    namespace: "{{ jenkins_namespace }}"
+    name: jenkins-fix-perms
+  register: pod_status
+  until: pod_status.resources[0].status.phase in ["Succeeded", "Failed"]
+  retries: 30
+  delay: 2
+
+- name: Delete busybox pod after completion
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_path }}"
+    kind: Pod
+    namespace: "{{ jenkins_namespace }}"
+    name: jenkins-fix-perms
+    state: absent
