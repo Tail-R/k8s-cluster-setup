@@ -19,19 +19,17 @@
     release_namespace: "{{ jenkins_namespace }}"
     create_namespace: false
     values:
-      controller:
-        admin:
-          username: "{{ jenkins_admin_name }}"
-          password: "{{ jenkins_admin_pass }}"
-        serviceType: ClusterIP
-        resources:
-          requests:
-            cpu: "{{ jenkins_request_cpu }}"
-            memory: "{{ jenkins_request_mem }}"
-          limits:
-            cpu: "{{ jenkins_limit_cpu }}"
-            memory: "{{ jenkins_limit_mem }}"
-        persistence:
-          enabled: true
-          storageClass: "{{ jenkins_pv_sc_name }}"
-          size: "{{ jenkins_pv_size }}"
+      adminUser: "{{ jenkins_admin_name }}"
+      adminPassword: "{{ jenkins_admin_pass }}"
+      serviceType: ClusterIP
+      resources:
+        requests:
+          memory: "{{ jenkins_request_mem }}"
+          cpu: "{{ jenkins_request_cpu }}"
+        limits:
+          memory: "{{ jenkins_limit_mem }}"
+          cpu: "{{ jenkins_limit_cpu }}"
+      persistence:
+        enabled: true
+        storageClass: "{{ jenkins_pv_sc_name }}"
+        size: "{{ jenkins_pv_size }}"
