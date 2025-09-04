@@ -1,0 +1,25 @@
+- name: Create PersistentVolume for Jenkins
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: PersistentVolume
+      metadata:
+        name: "{{ jenkins_pv_name }}"
+      spec:
+        capacity:
+          storage: "{{ jenkins_pv_size }}"
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: "{{ jenkins_pv_sc_name }}"
+        persistentVolumeReclaimPolicy: Retain
+        hostPath:
+          path: "{{ jenkins_pv_path }}"
+        nodeAffinity:
+          required:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - "{{ jenkins_pv_node }}"

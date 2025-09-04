@@ -1,3 +1,6 @@
+# Create PV for Prometheus Server
 - import_tasks: create_sc.yaml
 - import_tasks: create_pv.yaml
+
+# Deploy Prometheus
 - import_tasks: deploy_prometheus.yaml

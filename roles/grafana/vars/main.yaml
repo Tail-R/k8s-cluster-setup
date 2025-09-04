@@ -1,4 +1,4 @@
-# K8s resources
+# Grafana Settings
 grafana_namespace: "monitoring"
 grafana_pv_name: "grafana-pv"
 grafana_pv_path: "/mnt/data/grafana"
@@ -7,7 +7,7 @@ grafana_pv_size: "5Gi"
 grafana_pv_node: "k8s-worker-node-1"
 grafana_password: "12345"
 
-# Grafana configurations
+# Helm Settings
 grafana_helm_repo_url: "https://grafana.github.io/helm-charts"
 grafana_helm_release_name: "grafana"
 grafana_helm_chart_name: "grafana/grafana"

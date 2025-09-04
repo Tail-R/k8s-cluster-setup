@@ -1,0 +1,20 @@
+# Jenkins Settings
+jenkins_namespace: "jenkins"
+jenkins_pv_name: "jenkins-pv"
+jenkins_pv_path: "/mnt/data/jenkins"
+jenkins_pv_sc_name: "jenkins-sc"
+jenkins_pv_size: "5Gi"
+jenkins_pv_node: "k8s-worker-node-1"
+jenkins_admin_name: "admin"
+jenkins_admin_pass: "12345"
+
+# Scheduling Policy
+jenkins_request_cpu: "500m"
+jenkins_request_mem: "512Mi"
+jenkins_limit_cpu: "1"
+jenkins_limit_mem: "1Gi"
+
+# Helm Settings
+jenkins_helm_repo_url: "https://charts.jenkins.io"
+jenkins_helm_release_name: "jenkins"
+jenkins_helm_chart_name: "jenkinsci/jenkins"

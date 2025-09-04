@@ -1,8 +1,3 @@
-- name: Add Grafana Helm repository
-  kubernetes.core.helm_repository:
-    name: grafana
-    repo_url: https://grafana.github.io/helm-charts
-
 - name: Ensure namespace for Grafana exists
   kubernetes.core.k8s:
     kubeconfig: "{{ kubeconfig_path }}"
@@ -10,6 +5,11 @@
     kind: Namespace
     name: "{{ grafana_namespace }}"
     state: present
+
+- name: Add Grafana Helm repository
+  kubernetes.core.helm_repository:
+    name: grafana
+    repo_url: "{{ grafana_helm_repo_url }}"
 
 - name: Deploy Grafana using Helm
   kubernetes.core.helm:

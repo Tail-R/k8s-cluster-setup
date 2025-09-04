@@ -1,0 +1,35 @@
+- name: Ensure namespace for Jenkins exists
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_path }}"
+    api_version: v1
+    kind: Namespace
+    name: "{{ jenkins_namespace }}"
+    state: present
+
+- name: Add Jenkins Helm repo
+  community.kubernetes.helm_repository:
+    name: jenkinsci
+    repo_url: "{{ jenkins_helm_repo_url }}"
+
+- name: Deploy Jenkins using Helm
+  community.kubernetes.helm:
+    name: "{{ jenkins_helm_release_name }}"
+    chart_ref: "{{ jenkins_helm_chart_name }}"
+    release_namespace: "{{ jenkins_namespace }}"
+    create_namespace: false
+    values:
+      controller:
+        adminUser: "{{ jenkins_admin_name }}"
+        adminPassword: "{{ jenkins_admin_pass }}"
+        serviceType: ClusterIP
+        resources:
+          requests:
+            cpu: "{{ jenkins_request_cpu }}"
+            memory: "{{ jenkins_request_mem }}"
+          limits:
+            cpu: "{{ jenkins_limit_cpu }}"
+            memory: "{{ jenkins_limit_mem }}"
+        persistence:
+          enabled: true
+          storageClassName: "{{ jenkins_pv_sc_name }}"
+          size: "{{ jenkins_pv_size }}"
