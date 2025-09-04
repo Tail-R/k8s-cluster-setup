@@ -1,5 +1,6 @@
 - name: Create PersistentVolume for Jenkins
   kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_path }}"
     state: present
     definition:
       apiVersion: v1
