@@ -1,0 +1,10 @@
+# Prometheus Exporters Settings
+exporters:
+  - name: node-exporter
+    image: quay.io/prometheus/node-exporter:latest
+    ports:
+      - "9100:9100"
+  - name: lm-sensors-exporter
+    image: tailr/lm-sensors-exporter:latest
+    ports:
+      - "9200:9200"

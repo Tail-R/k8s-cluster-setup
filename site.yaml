@@ -58,18 +58,24 @@
   hosts: k8s-control-node-1
   become: yes
   roles:
-    - prometheus
+    - prometheus_server
+
+- name: Deploy Additional Exporters on Local/Ceph nodes
+  hosts: prometheus_exporters
+  become: yes
+  roles:
+    - prometheus_exporters
 
 ##### Grafana #######################################################
 - name: Deploy Grafana on Kubernetes cluster
   hosts: k8s-control-node-1
   become: yes
   roles:
-    - grafana
+    - grafana_server
 
 ##### Jenkins ########################################################
 - name: Deploy Jenkins on Kubernetes cluster
   hosts: k8s-control-node-1
   become: yes
   roles:
-    - jenkins
+    - jenkins_server

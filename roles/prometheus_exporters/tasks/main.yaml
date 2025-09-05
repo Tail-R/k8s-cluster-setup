@@ -1,0 +1,2 @@
+# Deploy Prometheus Exporters
+- import_tasks: deploy_exporters.yaml
