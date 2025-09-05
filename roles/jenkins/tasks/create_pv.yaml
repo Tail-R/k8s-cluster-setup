@@ -12,7 +12,7 @@
           storage: "{{ jenkins_pv_size }}"
         accessModes:
           - ReadWriteOnce
-        storageClassName: "{{ jenkins_pv_sc_name }}"
+        storageClassName: "{{ jenkins_sc_name }}"
         persistentVolumeReclaimPolicy: Retain
         hostPath:
           path: "{{ jenkins_pv_path }}"

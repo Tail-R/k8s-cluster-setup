@@ -1,4 +1,4 @@
-- name: Ensure namespace for Jenkins exists
+- name: Ensure Jenkins namespace exists
   kubernetes.core.k8s:
     kubeconfig: "{{ kubeconfig_path }}"
     api_version: v1
@@ -34,5 +34,5 @@
           cpu: "{{ jenkins_limit_cpu }}"
       persistence:
         enabled: true
-        storageClass: "{{ jenkins_pv_sc_name }}"
+        storageClass: "{{ jenkins_sc_name }}"
         size: "{{ jenkins_pv_size }}"

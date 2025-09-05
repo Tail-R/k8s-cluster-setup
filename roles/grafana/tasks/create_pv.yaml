@@ -22,7 +22,7 @@
         accessModes:
           - ReadWriteOnce
         persistentVolumeReclaimPolicy: Retain
-        storageClassName: "{{ grafana_pv_sc_name }}"
+        storageClassName: "{{ grafana_sc_name }}"
         local:
           path: "{{ grafana_pv_path }}"
         nodeAffinity:

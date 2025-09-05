@@ -1,4 +1,4 @@
-- name: Ensure namespace for Prometheus exists
+- name: Ensure Prometheus namespace exists
   kubernetes.core.k8s:
     kubeconfig: "{{ kubeconfig_path }}"
     api_version: v1
@@ -27,7 +27,7 @@
           kubernetes.io/hostname: "{{ prometheus_pv_node }}"
         persistentVolume:
           enabled: true
-          storageClass: "{{ prometheus_pv_sc_name }}"
+          storageClass: "{{ prometheus_sc_name }}"
           size: "{{ prometheus_pv_size }}"
       extraScrapeConfigs: |
         - job_name: "lm-sensors-exporter"

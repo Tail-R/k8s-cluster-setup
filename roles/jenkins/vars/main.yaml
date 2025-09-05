@@ -1,8 +1,8 @@
 # Jenkins Settings
 jenkins_namespace: "jenkins"
+jenkins_sc_name: "jenkins-sc"
 jenkins_pv_name: "jenkins-pv"
 jenkins_pv_path: "/mnt/data/jenkins"
-jenkins_pv_sc_name: "jenkins-sc"
 jenkins_pv_size: "5Gi"
 jenkins_pv_node: "k8s-worker-node-1"
 jenkins_admin_name: "admin"

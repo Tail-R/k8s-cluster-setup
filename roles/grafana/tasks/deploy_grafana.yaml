@@ -1,4 +1,4 @@
-- name: Ensure namespace for Grafana exists
+- name: Ensure Grafana namespace exists
   kubernetes.core.k8s:
     kubeconfig: "{{ kubeconfig_path }}"
     api_version: v1
@@ -21,7 +21,7 @@
     values:
       persistence:
         enabled: true
-        storageClassName: "{{ grafana_pv_sc_name }}"
+        storageClassName: "{{ grafana_sc_name }}"
         accessModes:
           - ReadWriteOnce
         size: "{{ grafana_pv_size }}"
