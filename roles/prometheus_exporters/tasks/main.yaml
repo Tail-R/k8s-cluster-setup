@@ -1,2 +1,8 @@
+- name: Ensure Podman is installed
+  package:
+    name: podman
+    state: present
+
 # Deploy Prometheus Exporters
-- import_tasks: deploy_exporters.yaml
+- import_tasks: deploy_node_exporter.yaml
+- import_tasks: deploy_lm_sensors_exporter.yaml

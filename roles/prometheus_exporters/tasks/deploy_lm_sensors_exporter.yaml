@@ -1,0 +1,8 @@
+- name: Deploy lm-sensors-exporter
+  containers.podman.podman_container:
+    name: "{{ lm_sensors_exporter.name }}"
+    image: "{{ lm_sensors_exporter.image }}"
+    state: started
+    restart: true
+    restart_policy: always
+    ports: "{{ lm_sensors_exporter.ports }}"

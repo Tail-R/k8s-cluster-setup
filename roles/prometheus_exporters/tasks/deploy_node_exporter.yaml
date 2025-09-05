@@ -1,0 +1,10 @@
+- name: Deploy node-exporter
+  containers.podman.podman_container:
+    name: "{{ node_exporter.name }}"
+    image: "{{ node_exporter.image }}"
+    state: started
+    restart: true
+    restart_policy: always
+    ports: "{{ node_exporter.ports }}"
+  delegate_to: ansible-control-node
+  run_once: true
