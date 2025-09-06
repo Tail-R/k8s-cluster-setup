@@ -25,6 +25,7 @@ Also, the provisioning is idempotent, so you can create a cluster or add nodes t
 - Automated Prometheus provisioning
     - Deploy node-exporter
     - Deploy kube-state-metrics
+    - Deploy custom exporter
     - Deploy Prometheus Server
 
 - Automated Grafana provisoning
