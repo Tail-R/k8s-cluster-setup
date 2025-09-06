@@ -30,6 +30,9 @@ Also, the provisioning is idempotent, so you can create a cluster or add nodes t
 - Automated Grafana provisoning
     - Deploy Grafana Server
 
+- Automated Jenkins provisoning
+    - Deploy Jenkins Server
+
 ## Dependencies
 - ansible 2.16.0
 
